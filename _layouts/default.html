@@ -39,10 +39,10 @@
 
     <header>
       <div class="container">
-          <picture >
-              <source type="image/webp" srcset="assets/images/dodtext800.webp" media="(min-width: 800px)" title="{{ site.title | default: site.github.repository_name }}">
-                  <source type="image/png" srcset="assets/images/dodtext800.png" media="(min-width: 800px)" title="{{ site.title | default: site.github.repository_name }}">
-              <img src="assets/images/dodtext800.png" alt="{{ site.title | default: site.github.repository_name }}">
+          <picture style="float:left;">
+              <source type="image/webp" srcset="assets/images/dodtext300.webp" media="(min-width: 300px)" title="{{ site.title | default: site.github.repository_name }}">
+                  <source type="image/png" srcset="assets/images/dodtext300.png" media="(min-width: 300px)" title="{{ site.title | default: site.github.repository_name }}">
+              <img src="assets/images/dodtext300.png" alt="{{ site.title | default: site.github.repository_name }}">
           </picture>
 
         <section id="downloads">
@@ -50,8 +50,11 @@
             <a href="{{ site.github.zip_url }}" class="btn">Download as .zip</a>
             <a href="{{ site.github.tar_url }}" class="btn">Download as .tar.gz</a>
           {% endif %}
-          <a href="{{ site.github.repository_url }}" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+          <a href="about.html" class="btn" style="float:right">About</a>
+          <a href="how.html" class="btn" style="float:right">How to Play</a>
+          <a href="{{ site.github.repository_url }}" class="btn btn-github" style="float:right"><span class="icon"></span>View on GitHub</a>
         </section>
+        <br clear="both">
       </div>
     </header>
 
