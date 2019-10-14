@@ -1,1 +1,14 @@
 theme: jekyll-theme-hacker
+title: Dungeons of Daggorath
+email: techy1@gmail.com
+description: Webassembly port of the classic Color Computer game, Dungeons of Daggorath
+author:
+  name: Nathan Byrd
+  email: techy1@gmail.com
+  github: cognitivegears
+production_url: https://daggorath.online
+github_username: cognitivegears
+exclude:
+  - Gemfile
+  - Gemfile.lock
+site.show_downloads: 0

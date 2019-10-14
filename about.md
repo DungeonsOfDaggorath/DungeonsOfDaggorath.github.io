@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## I dare ye enter the Dungeons of Daggorath
 
 You can use the [editor on GitHub](https://github.com/DungeonsOfDaggorath/website/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
