@@ -1,37 +1,19 @@
 ## I dare ye enter the Dungeons of Daggorath
 
-You can use the [editor on GitHub](https://github.com/DungeonsOfDaggorath/website/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+The first computer we got when I was a child was a Tandy Color Computer 2.  I fell in love with the infinite possibilites offered by having a computer in the home, particularly around entertainment and learning.  From this system I first learned how to program.  And yes, I played games.  My favorite game was one of the first single player games, written by DynaMicro Inc., named Dungeons of Daggorath.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+With this port of Dungeons of Daggorath to the web I am merely standing on the shoulders of giants.  Some of these giants include:
 
-### Markdown
+* Douglas J. Morgan and the team at DynaMicro that wrote the original game and [released the source](http://frodpod.tripod.com/lisence.html)
+* [PC Port](https://github.com/jamieleecho/DungeonsOfDaggorath/tree/master/Dungeons%20of%20Daggorath) by Richard Hunerlach
+* [SDL 2 Port](https://github.com/BlatantlyX/DungeonsOfDaggorath) by "BlatantlyX"
+* ... and many others.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## What is Dungeons of Daggorath?
 
-```markdown
-Syntax highlighted code block
+Others have better descriptions than I can offer here.  See [The Dungeons of Daggorath Video Game](http://iloveglory.freehostia.com/daggorath/index.html) for more information.
 
-# Header 1
-## Header 2
-### Header 3
+## So what is this port?
 
-- Bulleted
-- List
+This port takes the SDL 2 Port and makes the necessary changes to run it under WebAssembly.  For now this is a pretty basic/straightforward port - but look for more features going forward (contributions definitely welcome!)
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/DungeonsOfDaggorath/website/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
