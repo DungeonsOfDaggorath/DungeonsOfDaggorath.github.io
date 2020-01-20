@@ -1,0 +1,3 @@
+[submodule "daggorath"]
+	path = daggorath
+	url = git@github.com:cognitivegears/DungeonsOfDaggorath.git
