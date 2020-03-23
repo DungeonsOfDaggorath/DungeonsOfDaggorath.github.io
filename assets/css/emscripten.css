@@ -1,9 +1,39 @@
       .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
-      textarea.emscripten { font-family: monospace; width: 80%; }
+      #game_area {
+          width: 100%;
+          overflow: hidden;
+      }
+      .column_width {
+          margin: 0 auto;
+          max-width: 1200px;
+      }
+      #game_area .width_sizer {
+          max-width: 133vh;
+          margin: 0 auto;
+          width: 100%;
+          height: 100%;
+      }
+      #info {
+          position: relative;
+          overflow: hidden;
+          background: #000;
+          padding-bottom: 75%;
+          width: 100%;
+          height: 100%;
+      }
+
+      #frame {
+          display:none;
+          position: relative;
+          overflow: hidden;
+          background: #000;
+          padding-bottom: 75%;
+          width: 100%;
+          height: 100%;
+      }
       div.emscripten { text-align: center; }
-      div.emscripten_border { position: relative; padding-bottom: 75%; height: 0; border: 1px solid black; }
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
-      canvas.emscripten { border: 0px none; background-color: black; position: absolute; top: 0; left: 0; width: 100%; height: 100% }
+      canvas.emscripten { touch-action: none; overflow: hidden; border: 0px none; background-color: black; position: absolute; top: 0; left: 0; width: 100%; height: 100% }
 
       .spinner {
         height: 50px;
