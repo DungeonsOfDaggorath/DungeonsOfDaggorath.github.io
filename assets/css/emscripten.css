@@ -1,4 +1,23 @@
       .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+
+      .btn-lg {
+          font-size: 1.25rem;
+          line-height: 1.5;
+      }
+
+      .menu_items {
+        text-align: center;
+      }
+
+      #info a {
+        display: block;
+      }
+
+      #info * {
+          margin-bottom: 1em;
+      }
+
+
       #game_area {
           width: 100%;
           overflow: hidden;
@@ -10,14 +29,6 @@
       #game_area .width_sizer {
           max-width: 133vh;
           margin: 0 auto;
-          width: 100%;
-          height: 100%;
-      }
-      #info {
-          position: relative;
-          overflow: hidden;
-          background: #000;
-          padding-bottom: 75%;
           width: 100%;
           height: 100%;
       }

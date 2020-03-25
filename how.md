@@ -1,3 +1,7 @@
+---
+layout: info
+title: How to Play
+---
 ## How to play
 
 Some of the following information has been extracted from https://archive.org/stream/Dungeons_of_Daggorath_1983_Tandy/Dungeons_of_Daggorath_1983_Tandy_djvu.txt

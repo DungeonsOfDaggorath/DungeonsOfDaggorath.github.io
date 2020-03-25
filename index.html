@@ -1,22 +1,24 @@
 ---
 layout: default
 ---
+<div class="container menu_items" id="info">
+  <section id="main_content">
+  <picture>
+  <source type="image/webp" srcset="assets/images/dodtext300.webp" media="(min-width: 300px)" title="{{ site.title | default: site.github.repository.name }}">
+  <source type="image/png" srcset="assets/images/dodtext300.png" media="(min-width: 300px)" title="{{ site.title | default: site.github.repository_name }}">
+  <img src="assets/images/dodtext300.png" alt="{{ site.title | default: site.github.repository_name }}">
+  </picture>
+  <p>
+    <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn">Play Dungeons of Daggorath</button><br/>
+    <!--  <a id="readyPlayerOne" href="#">Start your engines.</a><br/> -->
+  <a href="about.html">About</a>
+  <a href="how.html">How to Play</a>
+  <a href="{{site.github.repository_url}}">View on GitHub</a>
+  </section>
+</div>
 <div id="game_area">
   <div class="column_width">
     <div class="width_sizer">
-      <div id="info">
-        <picture>
-          <source type="image/webp" srcset="assets/images/dodtext300.webp" media="(min-width: 300px)" title="{{ site.title | default: site.github.repository.name }}">
-          <source type="image/png" srcset="assets/images/dodtext300.png" media="(min-width: 300px)" title="{{ site.title | default: site.github.repository_name }}">
-          <img src="assets/images/dodtext300.png" alt="{{ site.title | default: site.github.repository_name }}">
-        </picture>
-        <p>
-          <a id="readyPlayerOne" href="#">Start your engines.</a><br/>
-          <a href="about.html">About</a><br/>
-          <a href="how.html">How to Play</a><br/>
-          <a href="{{site.github.repository_url}}">View on GitHub</a>
-
-      </div>
       <div id="frame">
         <figure id=spinner style=overflow:visible>
           <div class=spinner></div>

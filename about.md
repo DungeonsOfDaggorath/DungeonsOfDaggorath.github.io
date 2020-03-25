@@ -1,3 +1,7 @@
+---
+layout: info
+title: About this port
+---
 ## I dare ye enter the Dungeons of Daggorath
 
 The first computer we got when I was a child was a Tandy Color Computer 2.  I fell in love with the infinite possibilites offered by having a computer in the home, particularly around entertainment and learning.  From this system I first learned how to program.  And yes, I played games.  My favorite game was one of the first single player games, written by DynaMicro Inc., named Dungeons of Daggorath.
