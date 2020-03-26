@@ -30,6 +30,7 @@ layout: default
         </div>
         <canvas class=emscripten id=canvas oncontextmenu=event.preventDefault()></canvas>
       </div>
+      <button id="sendinput" type="button" class="btn-lg btn-primary btn">Send input</button><br/>
     </div>
   </div>
 </div>
@@ -58,7 +59,13 @@ layout: default
       $("#info").hide();
       Module.run();
       Module._main();
-  })});
+    });
+
+    $("#sendinput").click(function () {
+      Module.ccall('sendinput','void',['string'],["P L T\r"]);
+   });
+  
+  });
 
 </script>
 <script async src=index.js></script>
