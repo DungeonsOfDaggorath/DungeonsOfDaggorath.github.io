@@ -17,6 +17,18 @@
           margin-bottom: 1em;
       }
 
+      #button_area {
+        display: none;
+      }
+
+      #second_area {
+        display: none;
+      }
+
+      #inventory_area {
+        display: none;
+      }
+
 
       #game_area {
           width: 100%;

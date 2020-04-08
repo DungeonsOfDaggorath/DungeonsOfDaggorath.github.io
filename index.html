@@ -30,11 +30,37 @@ layout: default
         </div>
         <canvas class=emscripten id=canvas oncontextmenu=event.preventDefault()></canvas>
       </div>
-      <button id="sendinput" type="button" class="btn-lg btn-primary btn">Send input</button><br/>
+      <div id="button_area">
+      <button id="stopdemo" type="button" class="btn-lg btn-primary btn">Stop Demo / Start game</button><br/>
+      </div>
+      <div id="second_area">
+      </div>
+      <div id="inventory_area">
+      </div>
     </div>
   </div>
 </div>
 <script>
+
+  var inputCommands = {
+    "MOVE": ["FORWARD", "BACK", "LEFT", "RIGHT"],
+    "TURN": ["LEFT", "RIGHT", "AROUND"],
+    "ATTACK": ["LEFT", "RIGHT"],
+    "PULL": ["LEFT", "RIGHT"],
+    "GET": ["LEFT", "RIGHT"],
+    "STOW": ["LEFT", "RIGHT"],
+    "CLIMB": ["UP", "DOWN"],
+    "EXAMINE": [],
+    "LOOK": [],
+    "DROP": ["LEFT", "RIGHT"],
+    "USE": ["LEFT", "RIGHT"],
+    "REVEAL": ["LEFT", "RIGHT"],
+    "INCANT": [],
+    "ZSAVE": [],
+    "ZLOAD": [],
+    "RESTART": []
+  };
+
   var statusElement=document.getElementById("status");
   var progressElement=document.getElementById("progress");
   var spinnerElement=document.getElementById("spinner");
@@ -56,10 +82,49 @@ layout: default
   $(document).ready(function () {
     $("#readyPlayerOne").click(function () {
       $("#frame").show();
+      $("#button_area").show();
       $("#info").hide();
       Module.run();
       Module._main();
     });
+
+    $("#stopdemo").click(function () {
+      Module.ccall('stopdemo', 'void', []);
+      $("#stopdemo").hide();
+    });
+
+    for(var command in inputCommands) {
+      var inputButton = $('<button/>')
+        .text(command)
+        .click(function() {
+          var curText = $(this).text();
+
+          if(typeof(inputCommands[curText]) != 'undefined') {
+            $("#second_area").empty();
+            for(var second of inputCommands[curText]) {
+              var secondInputButton = $('<button/>')
+                .text(curText + " " + second)
+                .click(function() {
+                  var curText = $(this).text();
+                  if(curText == "MOVE FORWARD") {
+                    curText = "MOVE";
+                  }
+                  else if(curText.startsWith("PULL ")) {
+                    alert("pull");
+                  }
+
+                  Module.ccall('sendinput','void',['string'],[curText + "\r"]);
+                  $("#second_area").hide();
+                  $("#button_area").show();
+                } );
+              $("#second_area").append(secondInputButton);
+            }
+            $("#button_area").hide();
+            $("#second_area").show();
+          }
+        });
+      $("#button_area").append(inputButton);
+    }
 
     $("#sendinput").click(function () {
       Module.ccall('sendinput','void',['string'],["P L T\r"]);
