@@ -100,26 +100,91 @@ layout: default
           var curText = $(this).text();
 
           if(typeof(inputCommands[curText]) != 'undefined') {
+            if(inputCommands[curText].length == 0) {
+              // Single command
+              Module.ccall('sendinput','void',['string'],[curText + "\r"]);
+              return;
+            }
+
+
             $("#second_area").empty();
             for(var second of inputCommands[curText]) {
               var secondInputButton = $('<button/>')
                 .text(curText + " " + second)
                 .click(function() {
                   var curText = $(this).text();
-                  if(curText == "MOVE FORWARD") {
-                    curText = "MOVE";
-                  }
-                  else if(curText.startsWith("PULL ")) {
-                    alert("pull");
-                  }
 
-                  Module.ccall('sendinput','void',['string'],[curText + "\r"]);
-                  $("#second_area").hide();
-                  $("#button_area").show();
+                  if(curText.startsWith("PULL ") || curText.startsWith("GET ")) {
+
+                    var getinv;
+                    if(curText.startsWith("PULL ")) {
+                     getinv = Module.cwrap('getinventory','string',[], {async: false});
+                    }
+                    else {
+                     getinv = Module.cwrap('getfloor','string',[], {async: false});
+                    }
+                    // For some reason, cwrap sometimes (but not always)
+                    // returns a promise
+                    Promise.resolve(getinv()).then(function(value) {
+                      if(!value) {
+                        // In some cases there is no return value -
+                        // this is probably attached to when
+                        // a promise is returned. Also, it is always the
+                        // first call (but not always - probably a timing
+                        // thing.) A bug in emscripten? 
+                        // For now, make a second call
+                        invstring = getinv(); 
+                      }
+                      else {
+                        invstring = value;
+                      }
+
+                      if(!invstring) {
+                        // Nothing in inventory
+                        $("#second_area").hide();
+                        $("#inventory_area").hide();
+                        $("#button_area").show();
+                        return;
+                      }
+
+                      var inventory = invstring.split("|");
+                      $("#inventory_area").empty();
+                      for(var item of inventory) {
+                        if(item != "") {
+                          var invButton = $('<button/>')
+                            .text(curText + " " + item)
+                            .click( function() {
+                              var curText = $(this).text();
+                              Module.ccall('sendinput','void',['string'],[curText + "\r"]);
+                              $("#second_area").hide();
+                              $("#inventory_area").hide();
+                              $("#button_area").show();
+                            });
+                            $("#inventory_area").append(invButton);
+                        }
+                      }
+                      $("#button_area").hide();
+                      $("#second_area").hide();
+                      $("#inventory_area").show();
+
+                    });
+                  }
+                  else {
+                    if(curText == "MOVE FORWARD") {
+                      // Command only uses "MOVE", but the button displays
+                      // MOVE FORWARD
+                      curText = "MOVE";
+                    }
+                    Module.ccall('sendinput','void',['string'],[curText + "\r"]);
+                    $("#second_area").hide();
+                    $("#inventory_area").hide();
+                    $("#button_area").show();
+                  }
                 } );
               $("#second_area").append(secondInputButton);
             }
             $("#button_area").hide();
+            $("#inventory_area").hide();
             $("#second_area").show();
           }
         });
