@@ -29,6 +29,10 @@
         display: none;
       }
 
+      #installapp {
+        display: none;
+      }
+
 
       #game_area {
           width: 100%;

@@ -11,6 +11,7 @@ layout: default
   <p>
     <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn">Play Dungeons of Daggorath</button><br/>
     <!--  <a id="readyPlayerOne" href="#">Start your engines.</a><br/> -->
+    <div id="installapp"><a href="#" id="install_link">INSTALL</a></div>
   <a href="about.html">About</a>
   <a href="how.html">How to Play</a>
   <a href="{{site.github.repository_url}}">View on GitHub</a>
@@ -41,6 +42,39 @@ layout: default
   </div>
 </div>
 <script>
+
+  let deferredPrompt;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the mini-infobar from appearing on mobile
+    e.preventDefault();
+    // Stash the event so it can be triggered later.
+    deferredPrompt = e;
+    // update UI notify the user they can install the PWA
+    $("#installapp").show();
+  });
+
+  $("#install_link").click(function(event) {
+    event.preventDefault();
+
+    if(deferredPrompt == null) {
+      console.log("Something went wrong here, user clicked the link but no waiting event.");
+      return;
+    }
+
+    $("#installapp").hide();
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if(choiceResult.outcome === 'accepted') {
+        console.log("User accepted the install prompt");
+      }
+      else {
+        console.log("User dismissed the install prompt");
+        $("#installapp").show();
+      }
+    });
+  });
+
 
   var inputCommands = {
     "MOVE": ["FORWARD", "BACK", "LEFT", "RIGHT"],
