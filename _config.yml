@@ -12,4 +12,4 @@ exclude:
   - Gemfile
   - Gemfile.lock
 site.show_downloads: 0
-site.google_analytics: UA-33986051-2
+google_analytics: UA-33986051-2
