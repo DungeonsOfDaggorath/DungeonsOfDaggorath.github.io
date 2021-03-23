@@ -4,26 +4,26 @@ title: How to Play
 ---
 ## How to play
 
-Some of the following information has been extracted from https://archive.org/stream/Dungeons_of_Daggorath_1983_Tandy/Dungeons_of_Daggorath_1983_Tandy_djvu.txt
+Some of the following information has been extracted from [Daggorath 1983](https://archive.org/stream/Dungeons_of_Daggorath_1983_Tandy/Dungeons_of_Daggorath_1983_Tandy_djvu.txt)
 
 <table>
-<tr><th>Command</th><th width="150">Modifiers</th><th width="140">Abbreviation<br/>Example</th><th>Usage</th></tr>
-<tr><td>MOVE</td><td>[None]<br/> BACK<br/> LEFT<br/> RIGHT</td><td>M<br/> M B<br/> M L<br/> M R</td><td>Step one cell in direction</td></tr>
-<tr><td>TURN</td><td>LEFT<br/> RIGHT<br/> AROUND</td><td>T L<br/> T R<br/> T A</td><td>Turn in current cell</td></tr>
-<tr><td>CLIMB</td><td>UP<br/> DOWN</td><td>C U<br/> C D</td><td>Climb up a ladder. Climb down a ladder or a hole.</td></tr>
-<tr><td>EXAMINE</td><td>[None]</td><td>E</td><td>Show a list of items on the floor of the cell you occupy plus a list of everything you are carrying in your backpack.</td></tr>
-<tr><td>LOOK</td><td>[None]</td><td>L</td><td>Look at the Dungeon after an EXAMINE command.</td></tr>
-<tr><td>GET</td><td>[HAND] [ITEM]</td><td>G R T<br/> G L SW</td><td>Get an object from the floor with your left or right hand. Note: The object you type must be on the floor of the cell you occupy, and the hand you choose must be empty.</td></tr>
-<tr><td>PULL</td><td>[HAND] [ITEM]</td><td>P R T<br/> P L SW</td><td>Pull an object from your backpack. Note: The object you type must be in your backpack, and the hand you choose must be empty.</td></tr>
-<tr><td>STOW</td><td>[HAND]</td><td>S R<br/> S L</td><td>Stow the object in your hand into your backpack.</td></tr>
-<tr><td>DROP</td><td>[HAND]</td><td>D L<br/> D R</td><td>Drop the object in your hand to the floor.</td></tr>
-<tr><td>ATTACK</td><td>[HAND]</td><td>A L<br/> A R</td><td>Attack with the object in your hand.</td></tr>
-<tr><td>USE</td><td>[HAND]</td><td>U L<br/> U R</td><td>Use the object in your hand.</td></tr>
-<tr><td>REVEAL</td><td>[HAND]</td><td>R L<br/> R R</td><td>Attempt to reveal the type of object in your hand.</td></tr>
-<tr><td>INCANT</td><td>[MAGIC WORD]</td><td>I STEEL</td><td>Attempt to conjure up the magic power of a RING by incanting its magical name. Note: When you INCANT, type only the single wotd you are incanting, such as INCANT STEEL.</td></tr>
-<tr><td>ZSAVE</td><td>[SAVE NAME]</td><td>ZS SAVEONE</td><td>Saves your game.</td></tr>
-<tr><td>ZLOAD</td><td>[SAVE NAME]</td><td>ZL SAVEONE</td><td>Loads your game.</td></tr>
-<tr><td>RESTART</td><td>[None]</td><td>RESTART</td><td>Restarts from the beginning.</td></tr>
+<tr><th>Command</th><th width="150">Modifiers</th><th width="140">Abbreviation<br/>Example</th></tr>
+<tr><td>MOVE</td><td>[None]<br/> BACK<br/> LEFT<br/> RIGHT</td><td>M<br/> M B<br/> M L<br/> M R</td></tr><tr><td colspan="3">Step one cell in direction</td></tr>
+<tr><td>TURN</td><td>LEFT<br/> RIGHT<br/> AROUND</td><td>T L<br/> T R<br/> T A</td></tr><tr><td colspan="3">Turn in current cell</td></tr>
+<tr><td>CLIMB</td><td>UP<br/> DOWN</td><td>C U<br/> C D</td></tr><tr><td colspan="3">Climb up a ladder. Climb down a ladder or a hole.</td></tr>
+<tr><td>EXAMINE</td><td>[None]</td><td>E</td></tr><tr><td colspan="3">Show a list of items on the floor of the cell you occupy plus a list of everything you are carrying in your backpack.</td></tr>
+<tr><td>LOOK</td><td>[None]</td><td>L</td></tr><tr><td colspan="3">Look at the Dungeon after an EXAMINE command.</td></tr>
+<tr><td>GET</td><td>[HAND] [ITEM]</td><td>G R T<br/> G L SW</td></tr><tr><td colspan="3">Get an object from the floor with your left or right hand. Note: The object you type must be on the floor of the cell you occupy, and the hand you choose must be empty.</td></tr>
+<tr><td>PULL</td><td>[HAND] [ITEM]</td><td>P R T<br/> P L SW</td></tr><tr><td colspan="3">Pull an object from your backpack. Note: The object you type must be in your backpack, and the hand you choose must be empty.</td></tr>
+<tr><td>STOW</td><td>[HAND]</td><td>S R<br/> S L</td></tr><tr><td colspan="3">Stow the object in your hand into your backpack.</td></tr>
+<tr><td>DROP</td><td>[HAND]</td><td>D L<br/> D R</td></tr><tr><td colspan="3">Drop the object in your hand to the floor.</td></tr>
+<tr><td>ATTACK</td><td>[HAND]</td><td>A L<br/> A R</td></tr><tr><td colspan="3">Attack with the object in your hand.</td></tr>
+<tr><td>USE</td><td>[HAND]</td><td>U L<br/> U R</td></tr><tr><td colspan="3">Use the object in your hand.</td></tr>
+<tr><td>REVEAL</td><td>[HAND]</td><td>R L<br/> R R</td></tr><tr><td colspan="3">Attempt to reveal the type of object in your hand.</td></tr>
+<tr><td>INCANT</td><td>[MAGIC WORD]</td><td>I STEEL</td></tr><tr><td colspan="3">Attempt to conjure up the magic power of a RING by incanting its magical name. Note: When you INCANT, type only the single wotd you are incanting, such as INCANT STEEL.</td></tr>
+<tr><td>ZSAVE</td><td>[SAVE NAME]</td><td>ZS SAVEONE</td></tr><tr><td colspan="3">Saves your game.</td></tr>
+<tr><td>ZLOAD</td><td>[SAVE NAME]</td><td>ZL SAVEONE</td></tr><tr><td colspan="3">Loads your game.</td></tr>
+<tr><td>RESTART</td><td>[None]</td><td>RESTART</td></tr><tr><td colspan="3">Restarts from the beginning.</td></tr>
 </table>
 
 There are several types within each of these object classes. For example, a 
