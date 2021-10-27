@@ -17,6 +17,10 @@ With this port of Dungeons of Daggorath to the web I am merely standing on the s
 
 Others have better descriptions than I can offer here.  See [The Dungeons of Daggorath Video Game](http://iloveglory.freehostia.com/daggorath/index.html) for more information.
 
+See below for a great video guide about Dungeons of Daggorath by Retro Hack Shack:
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/JZcI-3ELs4g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## So what is this port?
 
 This port takes the SDL 2 Port and makes the necessary changes to run it under WebAssembly.  For now this is a pretty basic/straightforward port - but look for more features going forward (contributions definitely welcome!)
