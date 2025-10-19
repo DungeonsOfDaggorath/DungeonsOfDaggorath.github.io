@@ -8,6 +8,11 @@ layout: default
   <source type="image/png" srcset="assets/images/dodtext300.png" media="(min-width: 300px)" title="{{ site.title | default: site.github.repository_name }}">
   <img src="assets/images/dodtext300.png" alt="{{ site.title | default: site.github.repository_name }}">
   </picture>
+  <div id="coi-warning" class="alert alert-warning" style="display:none;">
+    <strong>Cross-origin isolation required.</strong> The threaded WebAssembly build needs SharedArrayBuffer support.
+    Run the site from a server that sets <code>Cross-Origin-Opener-Policy: same-origin</code> and <code>Cross-Origin-Embedder-Policy: require-corp</code>.
+    For local testing with the Emscripten SDK run <code>make serve</code> or <code>make serve-local</code>.
+  </div>
   <p>
     <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn">Play Dungeons of Daggorath</button><br/>
     <!--  <a id="readyPlayerOne" href="#">Start your engines.</a><br/> -->
@@ -98,15 +103,29 @@ layout: default
   var statusElement=document.getElementById("status");
   var progressElement=document.getElementById("progress");
   var spinnerElement=document.getElementById("spinner");
+  (function() {
+    var isolationOK = typeof SharedArrayBuffer !== "undefined" && window.crossOriginIsolated === true;
+    var warning = document.getElementById("coi-warning");
+    var startButton = document.getElementById("readyPlayerOne");
+    if (!isolationOK) {
+      if (warning) {
+        warning.style.display = "block";
+      }
+      if (startButton) {
+        startButton.disabled = true;
+      }
+    }
+  })();
+
   var Module= {
       preRun:[],
       postRun:[],
       print: function(text) { console.log(text)},
-      printErr: function(text) {console.log("ERROR: " + text)},
+      printErr: function(text) {console.error("ERROR:", text)},
       noExitRuntime: true,
       // Skip calling main
       noInitialRun: true,
-      canvas: function(){var e=document.getElementById("canvas");return e.addEventListener("webglcontextlost",function(e){alert("WebGL context lost. You will need to reload the page."),e.preventDefault()},!1),e}(),
+      canvas: function(){var e=document.getElementById("canvas");e.addEventListener("webglcontextlost",function(e){alert("WebGL context lost. You will need to reload the page."),e.preventDefault()},!1);console.log("Canvas initial size",e.width,e.height,"offscreen?",!!e.transferControlToOffscreen,e.getBoundingClientRect());return e}(),
       setStatus:function(e){if(Module.setStatus.last||(Module.setStatus.last={time:Date.now(),text:""}),e!==Module.setStatus.last.text){var t=e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/),n=Date.now();t&&n-Module.setStatus.last.time<30||(Module.setStatus.last.time=n,Module.setStatus.last.text=e,t?(e=t[1],progressElement.value=100*parseInt(t[2]),progressElement.max=100*parseInt(t[4]),progressElement.hidden=!1,spinnerElement.hidden=!1):(progressElement.value=null,progressElement.max=null,progressElement.hidden=!0,e||(spinnerElement.hidden=!0)),statusElement.innerHTML=e)}},
       totalDependencies: 0,
       monitorRunDependencies: function(e){this.totalDependencies=Math.max(this.totalDependencies,e),Module.setStatus(e?"Preparing... ("+(this.totalDependencies-e)+"/"+this.totalDependencies+")":"All downloads complete.")}
@@ -118,8 +137,11 @@ layout: default
       $("#frame").show();
       $("#button_area").show();
       $("#info").hide();
-      Module.run();
-      Module._main();
+      if (Module.callMain) {
+        Module.callMain([]);
+      } else if (Module._main) {
+        Module._main();
+      }
     });
 
     $("#stopdemo").click(function () {

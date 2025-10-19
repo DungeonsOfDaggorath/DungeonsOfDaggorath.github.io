@@ -29,8 +29,19 @@ See the main repo at https://github.com/cognitivegears/DungeonsOfDaggorath for i
 
 On the website, the C++ code is include in the "daggorath" submodule in the source code.  A Makefile is also included in the website version to build a new version of Daggorath for the website.  To run a build, use the following commands:
 
-    emmake make clean
-    emmake make
+    make clean
+    THREAD_POOL_SIZE=4 make wasm
+
+The `wasm` target invokes `emmake` under the hood, so make sure the Emscripten SDK environment is activated (or set `EMMAKE` to the path of `emmake`) before running it. By default the build allocates four worker threads; override this by passing `THREAD_POOL_SIZE=<n>` to any of the make targets (`wasm`, `site`, `serve`, `serve-local`).
+
+Because WebAssembly threads require `SharedArrayBuffer` support, you must serve the generated site with cross-origin isolation headers. Two convenience targets are provided:
+
+```
+make serve        # builds via Jekyll into _site/ and serves that tree with emrun
+make serve-local  # serves a standalone index.local.html without running Jekyll
+```
+
+After either command finishes, open http://localhost:8080/index.html (or index.local.html) in a browser that supports SharedArrayBuffer (Chrome, Edge, or Firefox with `dom.postMessage.sharedArrayBuffer.withCOOP_COEP` enabled).
 
 For more instructions on local installation, including installing dependencies, see the [main repo](https://github.com/cognitivegears/DungeonsOfDaggorath).
 
