@@ -144,6 +144,7 @@ layout: default
       }
     });
 
+
     $("#stopdemo").click(function () {
       Module.ccall('stopdemo', 'void', []);
       $("#stopdemo").hide();
@@ -246,6 +247,13 @@ layout: default
         });
       $("#button_area").append(inputButton);
     }
+
+    var menuButton = $('<button/>')
+      .text("MENU")
+      .click(function() {
+        Module.ccall('triggermenu','void',[]);
+      });
+    $("#button_area").append(menuButton);
 
     $("#sendinput").click(function () {
       Module.ccall('sendinput','void',['string'],["P L T\r"]);

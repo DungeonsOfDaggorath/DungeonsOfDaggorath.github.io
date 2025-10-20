@@ -164,6 +164,13 @@
           }
         });
 
+        var menuButton = $('<button/>')
+          .text("MENU")
+          .click(function() {
+            Module.ccall('triggermenu','void',[]);
+          });
+        $("#button_area").append(menuButton);
+
         $("#stopdemo").click(function () {
           Module.ccall('stopdemo', 'void', []);
           $("#stopdemo").hide();
@@ -207,6 +214,7 @@
                   })(inputCommands[curText][i]);
                 }
               }
+
             });
           $("#button_area").append(inputButton);
         }
