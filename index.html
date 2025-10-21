@@ -36,8 +36,8 @@ layout: default
         </div>
         <canvas class=emscripten id=canvas oncontextmenu=event.preventDefault()></canvas>
       </div>
-      <div id="button_area">
       <button id="stopdemo" type="button" class="btn-lg btn-primary btn">Stop Demo / Start game</button><br/>
+      <div id="button_area">
       </div>
       <div id="second_area">
       </div>
@@ -132,8 +132,43 @@ layout: default
     };
   Module.setStatus("Downloading..."),window.onerror=function(){Module.setStatus("Exception thrown, see JavaScript console"),spinnerElement.style.display="none",Module.setStatus=function(e){e&&Module.printErr("[post-exception status] "+e)}}
 
+  var isDemoFunc = null;
+  var controlHandler = null;
+  function updateControls() {
+    if (!Module.calledRun || typeof isDemoFunc !== 'function') {
+      // Not yet ready, just wait
+      return;
+    }
+
+    var demoActive = !!isDemoFunc();
+    if (!demoActive) {
+      // Once the demo is no longer active, hide the stop demo button
+      // and show the main controls
+
+      // Stop the control handler as the demo is no longer active
+      if(controlHandler) {
+        clearInterval(controlHandler);
+      }
+      $("#stopdemo").hide();
+      $("#button_area").show();
+      $("#second_area").hide();
+      $("#inventory_area").hide();
+    }
+  }
+
+  Module.onRuntimeInitialized = function() {
+    console.log('[Module] onRuntimeInitialized');
+    isDemoFunc = Module.cwrap('isdemo', 'number', []);
+  };
+
   $(document).ready(function () {
+    console.log('[document.ready] initializing control visibility', window.getComputedStyle(document.getElementById('stopdemo')).display, window.getComputedStyle(document.getElementById('button_area')).display);
+    $("#stopdemo").show();
+    $("#button_area").hide();
+    $("#second_area").hide();
+    $("#inventory_area").hide();
     $("#readyPlayerOne").click(function () {
+      console.log('[readyPlayerOne] clicked');
       $("#frame").show();
       $("#button_area").show();
       $("#info").hide();
@@ -142,10 +177,15 @@ layout: default
       } else if (Module._main) {
         Module._main();
       }
+      // Set interval to check for demo status
+      // to remove the stop demo button when the
+      // demo is no longer active
+      controlHandler = setInterval(updateControls, 500);
     });
 
 
     $("#stopdemo").click(function () {
+      console.log('[stopdemo] clicked', window.getComputedStyle(document.getElementById('stopdemo')).display, window.getComputedStyle(document.getElementById('button_area')).display);
       Module.ccall('stopdemo', 'void', []);
       $("#stopdemo").hide();
     });
@@ -188,9 +228,9 @@ layout: default
                         // this is probably attached to when
                         // a promise is returned. Also, it is always the
                         // first call (but not always - probably a timing
-                        // thing.) A bug in emscripten? 
+                        // thing.) A bug in emscripten?
                         // For now, make a second call
-                        invstring = getinv(); 
+                        invstring = getinv();
                       }
                       else {
                         invstring = value;
@@ -251,14 +291,14 @@ layout: default
     var menuButton = $('<button/>')
       .text("MENU")
       .click(function() {
-        Module.ccall('triggermenu','void',[]);
+        Module.ccall('triggermenu', 'void', []);
       });
     $("#button_area").append(menuButton);
 
     $("#sendinput").click(function () {
       Module.ccall('sendinput','void',['string'],["P L T\r"]);
    });
-  
+
   });
 
 </script>

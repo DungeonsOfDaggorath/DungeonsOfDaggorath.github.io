@@ -49,6 +49,55 @@
     });
   };
 
+  function normalizePropertyName(name) {
+    return name.indexOf("-") !== -1 ? name : name.replace(/([A-Z])/g, "-$1").toLowerCase();
+  }
+
+  Wrapper.prototype.css = function(property, value) {
+    if (typeof property === "string") {
+      var propName = property;
+      if (value === undefined) {
+        var first = this.nodes[0];
+        if (!first) {
+          return undefined;
+        }
+        var computed = window.getComputedStyle(first);
+        var normalized = normalizePropertyName(propName);
+        var direct = computed[propName];
+        return direct !== undefined ? direct : computed.getPropertyValue(normalized);
+      }
+      return this.each(function(node) {
+        if (!node.style) {
+          return;
+        }
+        if (propName.indexOf("-") !== -1) {
+          node.style.setProperty(propName, value);
+        } else {
+          node.style[propName] = value;
+        }
+      });
+    }
+
+    if (property && typeof property === "object") {
+      var styles = property;
+      return this.each(function(node) {
+        if (!node.style) {
+          return;
+        }
+        Object.keys(styles).forEach(function(key) {
+          var val = styles[key];
+          if (key.indexOf("-") !== -1) {
+            node.style.setProperty(key, val);
+          } else {
+            node.style[key] = val;
+          }
+        });
+      });
+    }
+
+    return this;
+  };
+
   Wrapper.prototype.click = function(handler) {
     return this.each(function(node) {
       node.addEventListener("click", handler);

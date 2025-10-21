@@ -50,8 +50,8 @@
             </div>
             <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
           </div>
+          <button id="stopdemo" type="button" class="btn-lg btn-primary btn">Stop Demo / Start game</button>
           <div id="button_area">
-            <button id="stopdemo" type="button" class="btn-lg btn-primary btn">Stop Demo / Start game</button>
           </div>
           <div id="second_area"></div>
           <div id="inventory_area"></div>
@@ -152,11 +152,64 @@
         };
       };
 
-      $(document).ready(function () {
-        $("#readyPlayerOne").click(function () {
-          $("#frame").show();
+      var controlHandler = null;
+      var isDemoFunc = null;
+      var demoSeen = false;
+      var demoInactiveCount = 0;
+      function updateControls() {
+        if (!Module.calledRun) {
+          $("#stopdemo").show();
+          $("#button_area").hide();
+          $("#second_area").hide();
+          $("#inventory_area").hide();
+          return;
+        }
+        if (typeof isDemoFunc !== "function") {
+          $("#stopdemo").show();
+          $("#button_area").hide();
+          $("#second_area").hide();
+          $("#inventory_area").hide();
+          return;
+        }
+        var demoActive = !!isDemoFunc();
+        if (!demoActive) {
+          // Once the demo is no longer active, hide the stop demo button
+          // and show the main controls
+
+          // Disable the control handler as we no longer need to check for demo status
+          if(controlHandler) {
+            clearInterval(controlHandler);
+          }
+
+          $("#stopdemo").hide();
           $("#button_area").show();
+          $("#second_area").hide();
+          $("#inventory_area").hide();
+        }
+      }
+
+      Module.onRuntimeInitialized = function() {
+        isDemoFunc = Module.cwrap("isdemo", "number", []);
+      };
+
+      $(document).ready(function () {
+    console.log('[document.ready] initializing control visibility', window.getComputedStyle(document.getElementById('stopdemo')).display, window.getComputedStyle(document.getElementById('button_area')).display);
+    $("#stopdemo").hide();
+    $("#button_area").hide();
+    $("#second_area").hide();
+    $("#inventory_area").hide();
+    $("#readyPlayerOne").click(function () {
+      console.log('[readyPlayerOne] clicked');
+          $("#stopdemo").show();
+          $("#frame").show();
+          $("#button_area").hide();
+          $("#second_area").hide();
+          $("#inventory_area").hide();
           $("#info").hide();
+          // Start the control handler to hide the stop demo button
+          // when the demo is not active
+          controlHandler = setInterval(updateControls, 500);
+
           if (Module.callMain) {
             Module.callMain([]);
           } else if (Module._main) {
@@ -172,6 +225,7 @@
         $("#button_area").append(menuButton);
 
         $("#stopdemo").click(function () {
+          demoSeen = true;
           Module.ccall('stopdemo', 'void', []);
           $("#stopdemo").hide();
         });
