@@ -205,24 +205,25 @@ layout: default
 
 
             $("#second_area").empty();
+            $("#button_area").hide();
+            $("#inventory_area").hide();
             for(var second of inputCommands[curText]) {
               var secondInputButton = $('<button/>')
                 .text(curText + " " + second)
                 .click(function() {
-                  var curText = $(this).text();
-
-                  if(curText.startsWith("PULL ") || curText.startsWith("GET ")) {
-
+                  var btnText = $(this).text();
+                  if(btnText.startsWith("PULL ") || btnText.startsWith("GET ")) {
                     var getinv;
-                    if(curText.startsWith("PULL ")) {
-                     getinv = Module.cwrap('getinventory','string',[], {async: false});
+                    if(btnText.startsWith("PULL ")) {
+                      getinv = Module.cwrap('getinventory','string',[], {async: false});
                     }
                     else {
-                     getinv = Module.cwrap('getfloor','string',[], {async: false});
+                      getinv = Module.cwrap('getfloor','string',[], {async: false});
                     }
                     // For some reason, cwrap sometimes (but not always)
                     // returns a promise
                     Promise.resolve(getinv()).then(function(value) {
+                      let invstring;
                       if(!value) {
                         // In some cases there is no return value -
                         // this is probably attached to when
@@ -249,7 +250,7 @@ layout: default
                       for(var item of inventory) {
                         if(item != "") {
                           var invButton = $('<button/>')
-                            .text(curText + " " + item)
+                            .text(btnText + " " + item)
                             .click( function() {
                               var curText = $(this).text();
                               Module.ccall('sendinput','void',['string'],[curText + "\r"]);
@@ -257,7 +258,7 @@ layout: default
                               $("#inventory_area").hide();
                               $("#button_area").show();
                             });
-                            $("#inventory_area").append(invButton);
+                          $("#inventory_area").append(invButton);
                         }
                       }
                       $("#button_area").hide();
@@ -267,12 +268,13 @@ layout: default
                     });
                   }
                   else {
-                    if(curText == "MOVE FORWARD") {
+                    var sendText = btnText;
+                    if(sendText == "MOVE FORWARD") {
                       // Command only uses "MOVE", but the button displays
                       // MOVE FORWARD
-                      curText = "MOVE";
+                      sendText = "MOVE";
                     }
-                    Module.ccall('sendinput','void',['string'],[curText + "\r"]);
+                    Module.ccall('sendinput','void',['string'],[sendText + "\r"]);
                     $("#second_area").hide();
                     $("#inventory_area").hide();
                     $("#button_area").show();
@@ -280,8 +282,6 @@ layout: default
                 } );
               $("#second_area").append(secondInputButton);
             }
-            $("#button_area").hide();
-            $("#inventory_area").hide();
             $("#second_area").show();
           }
         });
