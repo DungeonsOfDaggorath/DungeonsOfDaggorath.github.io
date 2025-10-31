@@ -241,6 +241,8 @@
                   return;
                 }
                 $("#second_area").empty();
+                $("#button_area").hide();
+                $("#inventory_area").hide();
                 for (var i = 0; i < inputCommands[curText].length; ++i) {
                   (function(second) {
                     var secondInputButton = $('<button/>')
@@ -248,25 +250,61 @@
                       .click(function() {
                         var btnText = $(this).text();
                         if (btnText.startsWith("PULL ") || btnText.startsWith("GET ")) {
-                          var getinv = btnText.startsWith("PULL ") ? Module.cwrap('getinventory','string',[], {async: false}) : Module.cwrap('getfloor','string',[], {async: false});
+                          var getinv = btnText.startsWith("PULL ")
+                            ? Module.cwrap('getinventory','string',[], {async: false})
+                            : Module.cwrap('getfloor','string',[], {async: false});
                           Promise.resolve(getinv()).then(function(value) {
-                            var invstring = value || getinv();
+                            let invstring;
+                            if (!value) {
+                              // Sometimes cwrap returns a promise; make a second call if needed.
+                              invstring = getinv();
+                            } else {
+                              invstring = value;
+                            }
+
                             if (!invstring) {
                               $("#second_area").hide();
                               $("#inventory_area").hide();
                               $("#button_area").show();
                               return;
                             }
+
+                            var inventory = invstring.split("|");
+                            $("#inventory_area").empty();
+                            for (var item of inventory) {
+                              if (item !== "") {
+                                var invButton = $('<button/>')
+                                  .text(btnText + " " + item)
+                                  .click(function() {
+                                    var curText = $(this).text();
+                                    Module.ccall('sendinput','void',['string'],[curText + "\r"]);
+                                    $("#second_area").hide();
+                                    $("#inventory_area").hide();
+                                    $("#button_area").show();
+                                  });
+                                $("#inventory_area").append(invButton);
+                              }
+                            }
                             $("#button_area").hide();
+                            $("#second_area").hide();
                             $("#inventory_area").show();
-                            $("#inventory_area").text(invstring);
                           });
+                        } else {
+                          var sendText = btnText;
+                          if (sendText === "MOVE FORWARD") {
+                            // Underlying command expects only "MOVE"
+                            sendText = "MOVE";
+                          }
+                          Module.ccall('sendinput','void',['string'],[sendText + "\r"]);
+                          $("#second_area").hide();
+                          $("#inventory_area").hide();
+                          $("#button_area").show();
                         }
-                        Module.ccall('sendinput','void',['string'],[btnText + "\r"]);
                       });
                     $("#second_area").append(secondInputButton);
                   })(inputCommands[curText][i]);
                 }
+                $("#second_area").show();
               }
 
             });
