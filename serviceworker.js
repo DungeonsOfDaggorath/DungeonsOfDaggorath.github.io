@@ -2,9 +2,16 @@ const CACHE = "pwabuilder-offline";
 
 const offlineFallbackPage = "index.html";
 
+// Cross-Origin Isolation headers for SharedArrayBuffer support (required for pthreads)
+// This enables the game to run with consistent timing via Web Workers
+const COI_HEADERS = {
+    "Cross-Origin-Embedder-Policy": "require-corp",
+    "Cross-Origin-Opener-Policy": "same-origin"
+};
+
 // Install stage sets up the index page (home page) in the cache and opens a new cache
 self.addEventListener("install", function (event) {
-  console.log("Install Event processing");
+    console.log("Install Event processing");
 
     event.waitUntil(
         caches.open(CACHE).then(function (cache) {
@@ -15,9 +22,37 @@ self.addEventListener("install", function (event) {
             }
 
             return cache.add(offlineFallbackPage);
+        }).then(function () {
+            // Immediately activate without waiting for existing pages to close
+            return self.skipWaiting();
         })
     );
 });
+
+// Activate stage - claim all clients immediately so we can add headers
+self.addEventListener("activate", function (event) {
+    console.log("Activate Event processing");
+    event.waitUntil(self.clients.claim());
+});
+
+// Helper to add COOP/COEP headers to enable cross-origin isolation
+function addCOIHeaders(response) {
+    // Can't modify opaque responses or redirects
+    if (response.type === "opaque" || response.type === "opaqueredirect") {
+        return response;
+    }
+
+    const newHeaders = new Headers(response.headers);
+    for (const [key, value] of Object.entries(COI_HEADERS)) {
+        newHeaders.set(key, value);
+    }
+
+    return new Response(response.body, {
+        status: response.status,
+        statusText: response.statusText,
+        headers: newHeaders
+    });
+}
 
 // If any fetch fails, it will look for the request in the cache and serve it from there first
 self.addEventListener("fetch", function (event) {
@@ -28,12 +63,15 @@ self.addEventListener("fetch", function (event) {
             .then(function (response) {
                 console.log("Add page to offline cache: " + response.url);
 
-                // If request was success, add or update it in the cache
-                event.waitUntil(updateCache(event.request, response.clone()));
+                // Add COOP/COEP headers for cross-origin isolation
+                const modifiedResponse = addCOIHeaders(response);
 
-                return response;
+                // If request was success, add or update it in the cache
+                event.waitUntil(updateCache(event.request, modifiedResponse.clone()));
+
+                return modifiedResponse;
             })
-            .catch(function (error) {        
+            .catch(function (error) {
                 console.log("Network request Failed. Serving content from cache: " + error);
                 return fromCache(event.request);
             })
