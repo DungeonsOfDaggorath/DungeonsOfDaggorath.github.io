@@ -11,7 +11,7 @@
   <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  <link rel="stylesheet" href="/preview/engine_refactor/assets/css/style.css?v=d9dc04a46bdf32dee1f024bbea56e0c7125ac65e">
+  <link rel="stylesheet" href="/preview/engine_refactor/assets/css/style.css?v=298f562b22e00139edd662d4ce647960230be7c7">
   <link rel="icon" href="/preview/engine_refactor/assets/images/favicon.ico">
   <link rel="manifest" href="/preview/engine_refactor/manifest.json">
   <meta name="theme-color" content="#dd0d1a">
@@ -31,7 +31,7 @@
   <meta name="msapplication-TitleColor" content="#dd0d1a">
   <meta name="msapplication-tap-highlight" content="no">
   <link rel="stylesheet"
-    href="/preview/engine_refactor/assets/css/emscripten.css?v=d9dc04a46bdf32dee1f024bbea56e0c7125ac65e">
+    href="/preview/engine_refactor/assets/css/emscripten.css?v=298f562b22e00139edd662d4ce647960230be7c7">
 
   <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Dungeons of Daggorath | Webassembly port of the classic Color Computer game, Dungeons of Daggorath</title>
@@ -48,7 +48,7 @@
 {"author":{"@type":"Person","name":"Nathan Byrd"},"headline":"Dungeons of Daggorath","description":"Webassembly port of the classic Color Computer game, Dungeons of Daggorath","url":"http://daggorath.online/preview/engine_refactor/","@type":"WebSite","name":"Dungeons of Daggorath","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
-  <script src="/preview/engine_refactor/assets/js/domlite.js?v=d9dc04a46bdf32dee1f024bbea56e0c7125ac65e"></script>
+  <script src="/preview/engine_refactor/assets/js/domlite.js?v=298f562b22e00139edd662d4ce647960230be7c7"></script>
 
 
   <script>
@@ -102,23 +102,26 @@
 
   <div class="container menu_items" id="info">
   <section id="main_content">
-  <picture>
-  <source type="image/webp" srcset="assets/images/dodtext300.webp" media="(min-width: 300px)" title="Dungeons of Daggorath">
-  <source type="image/png" srcset="assets/images/dodtext300.png" media="(min-width: 300px)" title="Dungeons of Daggorath">
-  <img src="assets/images/dodtext300.png" alt="Dungeons of Daggorath">
-  </picture>
-  <div id="coi-warning" class="alert alert-warning" style="display:none;">
-    <strong>Cross-origin isolation required.</strong> The threaded WebAssembly build needs SharedArrayBuffer support.
-    Run the site from a server that sets <code>Cross-Origin-Opener-Policy: same-origin</code> and <code>Cross-Origin-Embedder-Policy: require-corp</code>.
-    For local testing with the Emscripten SDK run <code>make serve</code> or <code>make serve-local</code>.
-  </div>
-  <p>
-    <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn">Play Dungeons of Daggorath</button><br/>
-    <!--  <a id="readyPlayerOne" href="#">Start your engines.</a><br/> -->
+    <picture>
+      <source type="image/webp" srcset="assets/images/dodtext300.webp" media="(min-width: 300px)"
+        title="Dungeons of Daggorath">
+      <source type="image/png" srcset="assets/images/dodtext300.png" media="(min-width: 300px)"
+        title="Dungeons of Daggorath">
+      <img src="assets/images/dodtext300.png" alt="Dungeons of Daggorath">
+    </picture>
+    <div id="coi-warning" class="alert alert-warning" style="display:none;">
+      <strong>Cross-origin isolation required.</strong> The threaded WebAssembly build needs SharedArrayBuffer support.
+      Run the site from a server that sets <code>Cross-Origin-Opener-Policy: same-origin</code> and
+      <code>Cross-Origin-Embedder-Policy: require-corp</code>.
+      For local testing with the Emscripten SDK run <code>make serve</code> or <code>make serve-local</code>.
+    </div>
+    <p>
+      <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn">Play Dungeons of Daggorath</button><br />
+      <!--  <a id="readyPlayerOne" href="#">Start your engines.</a><br/> -->
     <div id="installapp"><a href="#" id="install_link">INSTALL</a></div>
-  <a href="about.html">About</a>
-  <a href="how.html">How to Play</a>
-  <a href="https://github.com/DungeonsOfDaggorath/DungeonsOfDaggorath.github.io">View on GitHub</a>
+    <a href="about.html">About</a>
+    <a href="how.html">How to Play</a>
+    <a href="https://github.com/DungeonsOfDaggorath/DungeonsOfDaggorath.github.io">View on GitHub</a>
   </section>
 </div>
 <div id="game_area">
@@ -135,7 +138,8 @@
         </div>
         <canvas class=emscripten id=canvas oncontextmenu=event.preventDefault()></canvas>
       </div>
-      <button id="stopdemo" type="button" style="display:none" class="btn-lg btn-primary btn">Stop Demo / Start game</button><br/>
+      <button id="stopdemo" type="button" style="display:none" class="btn-lg btn-primary btn">Stop Demo / Start
+        game</button><br />
       <div id="button_area">
       </div>
       <div id="second_area">
@@ -158,10 +162,10 @@
     $("#installapp").show();
   });
 
-  $("#install_link").click(function(event) {
+  $("#install_link").click(function (event) {
     event.preventDefault();
 
-    if(deferredPrompt == null) {
+    if (deferredPrompt == null) {
       console.log("Something went wrong here, user clicked the link but no waiting event.");
       return;
     }
@@ -169,7 +173,7 @@
     $("#installapp").hide();
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
-      if(choiceResult.outcome === 'accepted') {
+      if (choiceResult.outcome === 'accepted') {
         console.log("User accepted the install prompt");
       }
       else {
@@ -199,10 +203,10 @@
     "RESTART": []
   };
 
-  var statusElement=document.getElementById("status");
-  var progressElement=document.getElementById("progress");
-  var spinnerElement=document.getElementById("spinner");
-  (function() {
+  var statusElement = document.getElementById("status");
+  var progressElement = document.getElementById("progress");
+  var spinnerElement = document.getElementById("spinner");
+  (function () {
     var isolationOK = typeof SharedArrayBuffer !== "undefined" && window.crossOriginIsolated === true;
     var warning = document.getElementById("coi-warning");
     var startButton = document.getElementById("readyPlayerOne");
@@ -216,20 +220,20 @@
     }
   })();
 
-  var Module= {
-      preRun:[],
-      postRun:[],
-      print: function(text) { console.log(text)},
-      printErr: function(text) {console.error("ERROR:", text)},
-      noExitRuntime: true,
-      // Skip calling main
-      noInitialRun: true,
-      canvas: function(){var e=document.getElementById("canvas");e.addEventListener("webglcontextlost",function(e){alert("WebGL context lost. You will need to reload the page."),e.preventDefault()},!1);console.log("Canvas initial size",e.width,e.height,"offscreen?",!!e.transferControlToOffscreen,e.getBoundingClientRect());return e}(),
-      setStatus:function(e){if(Module.setStatus.last||(Module.setStatus.last={time:Date.now(),text:""}),e!==Module.setStatus.last.text){var t=e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/),n=Date.now();t&&n-Module.setStatus.last.time<30||(Module.setStatus.last.time=n,Module.setStatus.last.text=e,t?(e=t[1],progressElement.value=100*parseInt(t[2]),progressElement.max=100*parseInt(t[4]),progressElement.hidden=!1,spinnerElement.hidden=!1):(progressElement.value=null,progressElement.max=null,progressElement.hidden=!0,e||(spinnerElement.hidden=!0)),statusElement.innerHTML=e)}},
-      totalDependencies: 0,
-      monitorRunDependencies: function(e){this.totalDependencies=Math.max(this.totalDependencies,e),Module.setStatus(e?"Preparing... ("+(this.totalDependencies-e)+"/"+this.totalDependencies+")":"All downloads complete.")}
-    };
-  Module.setStatus("Downloading..."),window.onerror=function(){Module.setStatus("Exception thrown, see JavaScript console"),spinnerElement.style.display="none",Module.setStatus=function(e){e&&Module.printErr("[post-exception status] "+e)}}
+  var Module = {
+    preRun: [],
+    postRun: [],
+    print: function (text) { console.log(text) },
+    printErr: function (text) { console.error("ERROR:", text) },
+    noExitRuntime: true,
+    // Skip calling main
+    noInitialRun: true,
+    canvas: function () { var e = document.getElementById("canvas"); e.addEventListener("webglcontextlost", function (e) { alert("WebGL context lost. You will need to reload the page."), e.preventDefault() }, !1); console.log("Canvas initial size", e.width, e.height, "offscreen?", !!e.transferControlToOffscreen, e.getBoundingClientRect()); return e }(),
+    setStatus: function (e) { if (Module.setStatus.last || (Module.setStatus.last = { time: Date.now(), text: "" }), e !== Module.setStatus.last.text) { var t = e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/), n = Date.now(); t && n - Module.setStatus.last.time < 30 || (Module.setStatus.last.time = n, Module.setStatus.last.text = e, t ? (e = t[1], progressElement.value = 100 * parseInt(t[2]), progressElement.max = 100 * parseInt(t[4]), progressElement.hidden = !1, spinnerElement.hidden = !1) : (progressElement.value = null, progressElement.max = null, progressElement.hidden = !0, e || (spinnerElement.hidden = !0)), statusElement.innerHTML = e) } },
+    totalDependencies: 0,
+    monitorRunDependencies: function (e) { this.totalDependencies = Math.max(this.totalDependencies, e), Module.setStatus(e ? "Preparing... (" + (this.totalDependencies - e) + "/" + this.totalDependencies + ")" : "All downloads complete.") }
+  };
+  Module.setStatus("Downloading..."), window.onerror = function () { Module.setStatus("Exception thrown, see JavaScript console"), spinnerElement.style.display = "none", Module.setStatus = function (e) { e && Module.printErr("[post-exception status] " + e) } }
 
   var isDemoFunc = null;
   var controlHandler = null;
@@ -245,7 +249,7 @@
       // and show the main controls
 
       // Stop the control handler as the demo is no longer active
-      if(controlHandler) {
+      if (controlHandler) {
         clearInterval(controlHandler);
       }
       $("#stopdemo").hide();
@@ -255,21 +259,24 @@
     }
   }
 
-  Module.onRuntimeInitialized = function() {
+  Module.onRuntimeInitialized = function () {
     console.log('[Module] onRuntimeInitialized');
     isDemoFunc = Module.cwrap('isdemo', 'number', []);
   };
 
   $(document).ready(function () {
     console.log('[document.ready] initializing control visibility', window.getComputedStyle(document.getElementById('stopdemo')).display, window.getComputedStyle(document.getElementById('button_area')).display);
-    $("#stopdemo").show();
+    $("#stopdemo").hide();
     $("#button_area").hide();
     $("#second_area").hide();
     $("#inventory_area").hide();
     $("#readyPlayerOne").click(function () {
       console.log('[readyPlayerOne] clicked');
+      $("#stopdemo").show();
       $("#frame").show();
-      $("#button_area").show();
+      $("#button_area").hide();
+      $("#second_area").hide();
+      $("#inventory_area").hide();
       $("#info").hide();
       if (Module.callMain) {
         Module.callMain([]);
@@ -289,16 +296,16 @@
       $("#stopdemo").hide();
     });
 
-    for(var command in inputCommands) {
+    for (var command in inputCommands) {
       var inputButton = $('<button/>')
         .text(command)
-        .click(function() {
+        .click(function () {
           var curText = $(this).text();
 
-          if(typeof(inputCommands[curText]) != 'undefined') {
-            if(inputCommands[curText].length == 0) {
+          if (typeof (inputCommands[curText]) != 'undefined') {
+            if (inputCommands[curText].length == 0) {
               // Single command
-              Module.ccall('sendinput','void',['string'],[curText + "\r"]);
+              Module.ccall('sendinput', 'void', ['string'], [curText + "\r"]);
               return;
             }
 
@@ -306,24 +313,24 @@
             $("#second_area").empty();
             $("#button_area").hide();
             $("#inventory_area").hide();
-            for(var second of inputCommands[curText]) {
+            for (var second of inputCommands[curText]) {
               var secondInputButton = $('<button/>')
                 .text(curText + " " + second)
-                .click(function() {
+                .click(function () {
                   var btnText = $(this).text();
-                  if(btnText.startsWith("PULL ") || btnText.startsWith("GET ")) {
+                  if (btnText.startsWith("PULL ") || btnText.startsWith("GET ")) {
                     var getinv;
-                    if(btnText.startsWith("PULL ")) {
-                      getinv = Module.cwrap('getinventory','string',[], {async: false});
+                    if (btnText.startsWith("PULL ")) {
+                      getinv = Module.cwrap('getinventory', 'string', [], { async: false });
                     }
                     else {
-                      getinv = Module.cwrap('getfloor','string',[], {async: false});
+                      getinv = Module.cwrap('getfloor', 'string', [], { async: false });
                     }
                     // For some reason, cwrap sometimes (but not always)
                     // returns a promise
-                    Promise.resolve(getinv()).then(function(value) {
+                    Promise.resolve(getinv()).then(function (value) {
                       let invstring;
-                      if(!value) {
+                      if (!value) {
                         // In some cases there is no return value -
                         // this is probably attached to when
                         // a promise is returned. Also, it is always the
@@ -336,7 +343,7 @@
                         invstring = value;
                       }
 
-                      if(!invstring) {
+                      if (!invstring) {
                         // Nothing in inventory
                         $("#second_area").hide();
                         $("#inventory_area").hide();
@@ -346,13 +353,13 @@
 
                       var inventory = invstring.split("|");
                       $("#inventory_area").empty();
-                      for(var item of inventory) {
-                        if(item != "") {
+                      for (var item of inventory) {
+                        if (item != "") {
                           var invButton = $('<button/>')
                             .text(btnText + " " + item)
-                            .click( function() {
+                            .click(function () {
                               var curText = $(this).text();
-                              Module.ccall('sendinput','void',['string'],[curText + "\r"]);
+                              Module.ccall('sendinput', 'void', ['string'], [curText + "\r"]);
                               $("#second_area").hide();
                               $("#inventory_area").hide();
                               $("#button_area").show();
@@ -368,17 +375,17 @@
                   }
                   else {
                     var sendText = btnText;
-                    if(sendText == "MOVE FORWARD") {
+                    if (sendText == "MOVE FORWARD") {
                       // Command only uses "MOVE", but the button displays
                       // MOVE FORWARD
                       sendText = "MOVE";
                     }
-                    Module.ccall('sendinput','void',['string'],[sendText + "\r"]);
+                    Module.ccall('sendinput', 'void', ['string'], [sendText + "\r"]);
                     $("#second_area").hide();
                     $("#inventory_area").hide();
                     $("#button_area").show();
                   }
-                } );
+                });
               $("#second_area").append(secondInputButton);
             }
             $("#second_area").show();
@@ -389,14 +396,14 @@
 
     var menuButton = $('<button/>')
       .text("MENU")
-      .click(function() {
+      .click(function () {
         Module.ccall('triggermenu', 'void', []);
       });
     $("#button_area").append(menuButton);
 
     $("#sendinput").click(function () {
-      Module.ccall('sendinput','void',['string'],["P L T\r"]);
-   });
+      Module.ccall('sendinput', 'void', ['string'], ["P L T\r"]);
+    });
 
   });
 
