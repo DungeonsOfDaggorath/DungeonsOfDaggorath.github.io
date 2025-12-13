@@ -59,57 +59,64 @@ jobs:
           PAGES_REPO_NWO: ${{ github.repository }}
           JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Prepare gh-pages working tree
+      - name: Save built site outside checkout
         run: |
-          mkdir -p gh-pages
-          cd gh-pages
+          # Move built site to /tmp so it's completely outside the git working tree
+          rm -rf /tmp/built-site
+          mv _site /tmp/built-site
+
+      - name: Prepare gh-pages branch
+        run: |
+          # Create a fresh directory for gh-pages work, completely separate from main checkout
+          rm -rf /tmp/gh-pages-work
+          mkdir /tmp/gh-pages-work
+          cd /tmp/gh-pages-work
           git init
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
 
-          # If gh-pages exists, check it out; otherwise create an orphan gh-pages branch.
+          # If gh-pages exists, fetch it (to preserve preview/ directory); otherwise start fresh
           if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
             git fetch --depth=1 origin gh-pages
             git checkout -B gh-pages FETCH_HEAD
+            # Clean everything except preview/ directory
+            find . -mindepth 1 -maxdepth 1 ! -name '.git' ! -name 'preview' -exec rm -rf {} +
           else
             git checkout --orphan gh-pages
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Seed root content from master build (preserve previews/)
+      - name: Copy built site to gh-pages
         run: |
-          # Replace site root with the master build, but keep existing previews/
-          rsync -a --delete --exclude 'preview/' _site/ gh-pages/
+          # Copy built site into the gh-pages working directory
+          cp -r /tmp/built-site/* /tmp/gh-pages-work/
 
           # Ensure preview index exists
-          mkdir -p gh-pages/preview
-          if [ ! -f gh-pages/preview/index.html ]; then
-            cat > gh-pages/preview/index.html <<'EOF'
-          <!DOCTYPE html>
-          <html>
-            <head><meta charset="utf-8"><title>Preview Builds</title></head>
-            <body>
-              <h1>Preview Builds</h1>
-              <p>Branch previews are available at <code>/preview/&lt;branch-name&gt;/</code>.</p>
-            </body>
-          </html>
-          EOF
+          mkdir -p /tmp/gh-pages-work/preview
+          if [ ! -f /tmp/gh-pages-work/preview/index.html ]; then
+            cat > /tmp/gh-pages-work/preview/index.html <<'EOF'
+<!DOCTYPE html>
+<html>
+  <head><meta charset="utf-8"><title>Preview Builds</title></head>
+  <body>
+    <h1>Preview Builds</h1>
+    <p>Branch previews are available at <code>/preview/&lt;branch-name&gt;/</code>.</p>
+  </body>
+</html>
+EOF
           fi
 
       - name: Commit and push gh-pages seed
-        working-directory: gh-pages
+        working-directory: /tmp/gh-pages-work
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
           if git diff --cached --quiet; then
             echo "No gh-pages changes to commit."
             exit 0
           fi
           git commit -m "Seed gh-pages from master (${GITHUB_SHA})"
-          # Push even if we're in detached HEAD by explicitly targeting the remote ref.
           git push -u origin HEAD:gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -118,7 +125,7 @@ jobs:
         if: inputs.deploy == 'true'
         uses: actions/upload-pages-artifact@v4
         with:
-          path: gh-pages
+          path: /tmp/gh-pages-work
 
       - name: Deploy to GitHub Pages
         if: inputs.deploy == 'true'
