@@ -55,6 +55,9 @@ jobs:
           bundle exec jekyll build --destination _site
         env:
           JEKYLL_ENV: production
+          # Required for jekyll-github-metadata in CI to resolve repo/baseurl/build_revision
+          PAGES_REPO_NWO: ${{ github.repository }}
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Prepare gh-pages working tree
         run: |
