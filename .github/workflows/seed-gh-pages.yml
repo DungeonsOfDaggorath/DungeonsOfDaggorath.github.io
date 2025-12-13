@@ -96,16 +96,7 @@ jobs:
           # Ensure preview index exists
           mkdir -p /tmp/gh-pages-work/preview
           if [ ! -f /tmp/gh-pages-work/preview/index.html ]; then
-            cat > /tmp/gh-pages-work/preview/index.html <<'EOF'
-<!DOCTYPE html>
-<html>
-  <head><meta charset="utf-8"><title>Preview Builds</title></head>
-  <body>
-    <h1>Preview Builds</h1>
-    <p>Branch previews are available at <code>/preview/&lt;branch-name&gt;/</code>.</p>
-  </body>
-</html>
-EOF
+            echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Preview Builds</title></head><body><h1>Preview Builds</h1><p>Branch previews are available at /preview/&lt;branch-name&gt;/</p></body></html>' > /tmp/gh-pages-work/preview/index.html
           fi
 
       - name: Commit and push gh-pages seed
