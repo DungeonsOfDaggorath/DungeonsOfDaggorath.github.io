@@ -109,7 +109,8 @@ jobs:
             exit 0
           fi
           git commit -m "Seed gh-pages from master (${GITHUB_SHA})"
-          git push -u origin gh-pages
+          # Push even if we're in detached HEAD by explicitly targeting the remote ref.
+          git push -u origin HEAD:gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
