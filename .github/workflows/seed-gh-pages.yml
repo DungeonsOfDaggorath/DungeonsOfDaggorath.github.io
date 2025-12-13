@@ -41,15 +41,11 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '3.2'
+          # github-pages 203 pins jekyll 3.8.5, which is not compatible with Ruby 3.x
+          # (keyword-args changes cause "no implicit conversion of Hash into Integer").
+          ruby-version: '2.7'
+          bundler: '2.4.22'
           bundler-cache: true
-
-      # Ruby 3.x no longer bundles REXML in the standard library by default, but
-      # Jekyll 3.8.x / kramdown 1.17 expect it. Install it explicitly.
-      # Note: REXML 3.4.2+ includes security fixes (see CVE-2025-58767 advisory).
-      - name: Install rexml
-        run: |
-          gem install rexml -v 3.4.4 --no-document
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
