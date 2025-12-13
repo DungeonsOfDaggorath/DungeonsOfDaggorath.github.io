@@ -1,8 +1,9 @@
 # One-time (and re-runnable) workflow to seed the `gh-pages` branch from the current `master`
 # build output, without needing a local Jekyll build.
 #
-# After seeding, your preview workflow can safely write to /preview/<branch>/ without
-# touching the root site content.
+# This is necessary because preview deployments rely on `gh-pages` containing the current
+# production site at the root. Once seeded, preview branch pushes will only update
+# /preview/<branch>/ and will not affect the root site.
 
 name: Seed gh-pages from master
 
@@ -40,7 +41,8 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.2"
+          ruby-version: '2.7'
+          bundler: '2.7.2'
           bundler-cache: true
 
       - name: Setup Pages
@@ -73,8 +75,10 @@ jobs:
 
       - name: Seed root content from master build (preserve previews/)
         run: |
+          # Replace site root with the master build, but keep existing previews/
           rsync -a --delete --exclude 'preview/' _site/ gh-pages/
 
+          # Ensure preview index exists
           mkdir -p gh-pages/preview
           if [ ! -f gh-pages/preview/index.html ]; then
             cat > gh-pages/preview/index.html <<'EOF'
