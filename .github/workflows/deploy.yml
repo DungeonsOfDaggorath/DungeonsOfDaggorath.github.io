@@ -87,70 +87,59 @@ jobs:
           PAGES_REPO_NWO: ${{ github.repository }}
           JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Checkout gh-pages branch (persistent storage)
-        uses: actions/checkout@v4
-        with:
-          ref: gh-pages
-          path: gh-pages
-          fetch-depth: 0
+      - name: Clone gh-pages branch (persistent storage)
+        if: github.event_name == 'push'
+        run: |
+          # Clone gh-pages into /tmp to keep it completely separate from main checkout
+          rm -rf /tmp/gh-pages-work
+          git clone --single-branch --branch gh-pages --depth 1 \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            /tmp/gh-pages-work
+          cd /tmp/gh-pages-work
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update gh-pages content (master -> root, preserve previews)
         if: steps.deployment-type.outputs.is_master == 'true' && github.event_name == 'push'
         run: |
           # Replace site root with the new build, but keep existing previews/
-          rsync -a --delete --exclude 'preview/' _site/ gh-pages/
-
-          # Ensure preview index exists
-          mkdir -p gh-pages/preview
-          if [ ! -f gh-pages/preview/index.html ]; then
-            cat > gh-pages/preview/index.html <<'EOF'
-          <!DOCTYPE html>
-          <html>
-            <head><meta charset="utf-8"><title>Preview Builds</title></head>
-            <body>
-              <h1>Preview Builds</h1>
-              <p>Branch previews are available at <code>/preview/&lt;branch-name&gt;/</code>.</p>
-            </body>
-          </html>
-          EOF
-          fi
+          rsync -a --delete --exclude 'preview/' --exclude '.git/' _site/ /tmp/gh-pages-work/
 
       - name: Update gh-pages content (branch -> preview/<branch>)
         if: steps.deployment-type.outputs.is_master == 'false' && github.event_name == 'push'
         run: |
-          TARGET_DIR="gh-pages/${{ steps.deployment-type.outputs.deploy_path }}"
+          TARGET_DIR="/tmp/gh-pages-work/${{ steps.deployment-type.outputs.deploy_path }}"
           mkdir -p "$TARGET_DIR"
           rsync -a --delete _site/ "$TARGET_DIR/"
 
           # Ensure preview index exists
-          mkdir -p gh-pages/preview
-          if [ ! -f gh-pages/preview/index.html ]; then
-            cat > gh-pages/preview/index.html <<'EOF'
-          <!DOCTYPE html>
-          <html>
-            <head><meta charset="utf-8"><title>Preview Builds</title></head>
-            <body>
-              <h1>Preview Builds</h1>
-              <p>Branch previews are available at <code>/preview/&lt;branch-name&gt;/</code>.</p>
-            </body>
-          </html>
-          EOF
+          mkdir -p /tmp/gh-pages-work/preview
+          if [ ! -f /tmp/gh-pages-work/preview/index.html ]; then
+            cat > /tmp/gh-pages-work/preview/index.html <<'EOF'
+<!DOCTYPE html>
+<html>
+  <head><meta charset="utf-8"><title>Preview Builds</title></head>
+  <body>
+    <h1>Preview Builds</h1>
+    <p>Branch previews are available at <code>/preview/&lt;branch-name&gt;/</code>.</p>
+  </body>
+</html>
+EOF
           fi
 
       - name: Commit and push gh-pages updates (push events only)
         if: github.event_name == 'push'
-        working-directory: gh-pages
+        working-directory: /tmp/gh-pages-work
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
           if git diff --cached --quiet; then
             echo "No gh-pages changes to commit."
             exit 0
           fi
           git commit -m "Update Pages content from ${GITHUB_REF_NAME} (${GITHUB_SHA})"
-          # Push even if we're in detached HEAD by explicitly targeting the remote ref.
-          git push origin HEAD:gh-pages
+          git push origin gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -158,7 +147,7 @@ jobs:
         if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v4
         with:
-          path: gh-pages
+          path: /tmp/gh-pages-work
 
     outputs:
       is_master: ${{ steps.deployment-type.outputs.is_master }}
