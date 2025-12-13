@@ -6,8 +6,6 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - '**'          # all branches (including names containing '/')
     branches-ignore:
       - gh-pages      # don't recurse when we update gh-pages as storage
   pull_request:
