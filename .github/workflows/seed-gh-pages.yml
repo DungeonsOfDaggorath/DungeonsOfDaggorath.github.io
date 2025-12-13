@@ -1,0 +1,126 @@
+# One-time (and re-runnable) workflow to seed the `gh-pages` branch from the current `master`
+# build output, without needing a local Jekyll build.
+#
+# This is necessary because preview deployments rely on `gh-pages` containing the current
+# production site at the root. Once seeded, preview branch pushes will only update
+# /preview/<branch>/ and will not affect the root site.
+
+name: Seed gh-pages from master
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        description: "If true, also deploy to GitHub Pages after seeding"
+        required: true
+        default: "true"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  seed:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master (source of truth for production)
+        uses: actions/checkout@v4
+        with:
+          ref: master
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          # github-pages 203 pins jekyll 3.8.5, which is not compatible with Ruby 3.x
+          # (keyword-args changes cause "no implicit conversion of Hash into Integer").
+          ruby-version: '2.7'
+          bundler: '2.4.22'
+          bundler-cache: true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build Jekyll site (master -> root)
+        run: |
+          bundle exec jekyll build --destination _site
+        env:
+          JEKYLL_ENV: production
+          # Required for jekyll-github-metadata in CI to resolve repo/baseurl/build_revision
+          PAGES_REPO_NWO: ${{ github.repository }}
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare gh-pages working tree
+        run: |
+          mkdir -p gh-pages
+          cd gh-pages
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          # If gh-pages exists, check it out; otherwise create an orphan gh-pages branch.
+          if git ls-remote --exit-code --heads origin gh-pages >/dev/null 2>&1; then
+            git fetch --depth=1 origin gh-pages
+            git checkout -B gh-pages FETCH_HEAD
+          else
+            git checkout --orphan gh-pages
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Seed root content from master build (preserve previews/)
+        run: |
+          # Replace site root with the master build, but keep existing previews/
+          rsync -a --delete --exclude 'preview/' _site/ gh-pages/
+
+          # Ensure preview index exists
+          mkdir -p gh-pages/preview
+          if [ ! -f gh-pages/preview/index.html ]; then
+            cat > gh-pages/preview/index.html <<'EOF'
+          <!DOCTYPE html>
+          <html>
+            <head><meta charset="utf-8"><title>Preview Builds</title></head>
+            <body>
+              <h1>Preview Builds</h1>
+              <p>Branch previews are available at <code>/preview/&lt;branch-name&gt;/</code>.</p>
+            </body>
+          </html>
+          EOF
+          fi
+
+      - name: Commit and push gh-pages seed
+        working-directory: gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No gh-pages changes to commit."
+            exit 0
+          fi
+          git commit -m "Seed gh-pages from master (${GITHUB_SHA})"
+          # Push even if we're in detached HEAD by explicitly targeting the remote ref.
+          git push -u origin HEAD:gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Pages artifact (seed result)
+        if: inputs.deploy == 'true'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: gh-pages
+
+      - name: Deploy to GitHub Pages
+        if: inputs.deploy == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4

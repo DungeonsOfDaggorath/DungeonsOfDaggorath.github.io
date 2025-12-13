@@ -1,61 +1,71 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "en-US" }}">
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="{{ site.author.name }}">
+<html lang="{{ site.lang | default: " en-US" }}">
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="{{ site.author.name }}">
+
+  <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+  <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-    <link rel="icon" href="/assets/images/favicon.ico">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#dd0d1a">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Dungeons of Daggorath">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Dungeons of Daggorath">
+  <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  <link rel="icon" href="{{ '/assets/images/favicon.ico' | relative_url }}">
+  <link rel="manifest" href="{{ '/manifest.json' | relative_url }}">
+  <meta name="theme-color" content="#dd0d1a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Dungeons of Daggorath">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Dungeons of Daggorath">
 
-    <link rel="apple-touch-icon" href="/assets/images/wizicon48.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/wizicon72.png">
-    <link rel="apple-touch-icon" sizes="96x96" href="/assets/images/wizicon96.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/assets/images/wizicon144.png">
-    <link rel="apple-touch-icon" sizes="192x192" href="/assets/images/wizicon192.png">
+  <link rel="apple-touch-icon" href="{{ '/assets/images/wizicon48.png' | relative_url }}">
+  <link rel="apple-touch-icon" sizes="72x72" href="{{ '/assets/images/wizicon72.png' | relative_url }}">
+  <link rel="apple-touch-icon" sizes="96x96" href="{{ '/assets/images/wizicon96.png' | relative_url }}">
+  <link rel="apple-touch-icon" sizes="144x144" href="{{ '/assets/images/wizicon144.png' | relative_url }}">
+  <link rel="apple-touch-icon" sizes="192x192" href="{{ '/assets/images/wizicon192.png' | relative_url }}">
 
-    <meta name="msapplication-TitleImage" content="/assets/images/wizicon144.png">
-    <meta name="msapplication-TitleColor" content="#dd0d1a">
-    <meta name="msapplication-tap-highlight" content="no">
-    <link rel="stylesheet" href="{{ '/assets/css/emscripten.css?v=' | append: site.github.build_revision | relative_url }}">
+  <meta name="msapplication-TitleImage" content="{{ '/assets/images/wizicon144.png' | relative_url }}">
+  <meta name="msapplication-TitleColor" content="#dd0d1a">
+  <meta name="msapplication-tap-highlight" content="no">
+  <link rel="stylesheet"
+    href="{{ '/assets/css/emscripten.css?v=' | append: site.github.build_revision | relative_url }}">
 
-{% seo %}
-    <script src="{{ '/assets/js/domlite.js?v=' | append: site.github.build_revision | relative_url }}"></script>
+  {% seo %}
+  <script src="{{ '/assets/js/domlite.js?v=' | append: site.github.build_revision | relative_url }}"></script>
 
 
-    <script>
-			if ("serviceWorker" in navigator) {
-				if (navigator.serviceWorker.controller) {
-					console.log("An active service worker found, no need to register");
-				} else {
-					// Register the service worker
-					navigator.serviceWorker
-					.register("{{ site.baseurl }}/serviceworker.js", {
-						scope: "./"
-					})
-					.then(function (reg) {
-						console.log("Service worker has been registered for scope: " + reg.scope);
-					});
-				}
-			}
-    </script>
-  </head>
+  <script>
+    if ("serviceWorker" in navigator) {
+      if (navigator.serviceWorker.controller) {
+        console.log("An active service worker found, no need to register");
+      } else {
+        // Register the service worker with proper baseurl handling
+        var baseUrl = "{{ site.baseurl | default: '' }}";
+        var swPath = baseUrl + "/serviceworker.js";
+        var swScope = baseUrl + "/";
+        // Handle root case where baseurl is empty
+        if (baseUrl === "") {
+          swPath = "/serviceworker.js";
+          swScope = "/";
+        }
+        navigator.serviceWorker
+          .register(swPath, {
+            scope: swScope
+          })
+          .then(function (reg) {
+            console.log("Service worker has been registered for scope: " + reg.scope);
+          });
+      }
+    }
+  </script>
+</head>
 
-  <body>
+<body>
 
-    <!--
+  <!--
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
       <a class="navbar-brand" href="#">
           <picture style="float:left;">
@@ -79,17 +89,20 @@
     </nav>
     -->
 
-    {{ content }}
+  {{ content }}
 
-    {% if site.google_analytics %}
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        ga('create', '{{ site.google_analytics }}', 'auto');
-        ga('send', 'pageview');
-      </script>
-    {% endif %}
-  </body>
+  {% if site.google_analytics %}
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', '{{ site.google_analytics }}', 'auto');
+    ga('send', 'pageview');
+  </script>
+  {% endif %}
+</body>
+
 </html>

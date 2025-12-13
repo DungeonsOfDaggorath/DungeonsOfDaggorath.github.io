@@ -7,45 +7,50 @@ layout: none
     "short_name": "Daggorath",
     "language": "en",
     "lang_direction": "ltr",
-    "start_url": "https://daggorath.online",
+    "start_url": "{{ site.baseurl | default: '' }}/",
+    "scope": "{{ site.baseurl | default: '' }}/",
     "display": "standalone",
     "orientation": "portrait",
     "background_color": "#000",
     "description": "Port of classic TRS-80 game, Dungeons of Daggorath",
-    "categories": ["games", "entertainment"],
+    "categories": [
+        "games",
+        "entertainment"
+    ],
     "theme_color": "black",
-    "icons": [{
-            "src": "assets/images/wizicon48.png",
+    "icons": [
+        {
+            "src": "{{ site.baseurl | default: '' }}/assets/images/wizicon48.png",
             "sizes": "48x48",
             "type": "image/png"
-        }, 
+        },
         {
-            "src": "assets/images/wizicon72.png",
+            "src": "{{ site.baseurl | default: '' }}/assets/images/wizicon72.png",
             "sizes": "72x72",
             "type": "image/png"
-        }, 
+        },
         {
-            "src": "assets/images/wizicon96.png",
+            "src": "{{ site.baseurl | default: '' }}/assets/images/wizicon96.png",
             "sizes": "96x96",
             "type": "image/png"
-        }, 
+        },
         {
-            "src": "assets/images/wizicon144.png",
+            "src": "{{ site.baseurl | default: '' }}/assets/images/wizicon144.png",
             "sizes": "144x144",
             "type": "image/png"
-        }, 
+        },
         {
-            "src": "assets/images/wizicon168.png",
+            "src": "{{ site.baseurl | default: '' }}/assets/images/wizicon168.png",
             "sizes": "168x168",
             "type": "image/png"
-        }, 
+        },
         {
-            "src": "assets/images/wizicon192.png",
+            "src": "{{ site.baseurl | default: '' }}/assets/images/wizicon192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "assets/images/wizicon512.png",
+            "src": "{{ site.baseurl | default: '' }}/assets/images/wizicon512.png",
             "sizes": "512x512",
             "type": "image/png"
         }

@@ -11,5 +11,19 @@ github_username: cognitivegears
 exclude:
   - Gemfile
   - Gemfile.lock
+  # Jekyll default excludes (overridden when `exclude:` is set explicitly)
+  - node_modules
+  - .sass-cache
+  - .jekyll-cache
+  - .jekyll-metadata
+  - vendor
+  - vendor/bundle
+  - vendor/cache
+  - vendor/gems
+  - vendor/ruby
+  # Repo-only folders that should not be processed as site content
+  - .github
+  - .vscode
+  - daggorath/src
 site.show_downloads: 0
 google_analytics: UA-33986051-2

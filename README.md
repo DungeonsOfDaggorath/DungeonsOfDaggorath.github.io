@@ -8,6 +8,25 @@ The source code for Dungeons of Daggorath web port is broken into two repositori
 
 The website is written using [Jekyll](https://jekyllrb.com/) and hosted using [GitHub](https://github.com/).
 
+### Deployments (Production + Branch Previews)
+
+This repo uses **GitHub Actions + GitHub Pages** to publish:
+
+- **Production**: `master` deploys to the site root (`/`)
+- **Previews**: any non-`master` branch deploys to `/preview/<branch-name>/`
+
+Previews are stored under the `gh-pages` branch and do **not** overwrite production content.
+
+#### One-time setup: seed the `gh-pages` branch from current `master`
+
+Because local `bundle exec jekyll build` may not match GitHub’s build environment, the repo includes a manual GitHub Actions workflow that seeds `gh-pages` directly in CI using the same toolchain.
+
+1. Push the workflows in this repo to your branch.
+2. In GitHub, go to **Actions** → **Seed gh-pages from master** → **Run workflow**.
+3. Leave **deploy=true** (default) so it seeds `gh-pages` and deploys it immediately.
+
+After this, pushing `master` updates the root (while preserving `preview/`), and pushing feature branches updates only their preview subdirectory under `/preview/<branch-name>/`.
+
 _Local Installation_
 
 1. Clone this repository
@@ -71,9 +90,9 @@ Some of the following information has been extracted from https://archive.org/st
 <tr><td>RESTART</td><td>[None]</td><td>RESTART</td><td>Restarts from the beginning.</td></tr>
 </table>
 
-There are several types within each of these object classes. For example, a 
-TORCH can be a PINE TORCH or a LUNAR TORCH. The chart below will 
-clarify the various types of objects. The types of RINGs, however, will not be 
+There are several types within each of these object classes. For example, a
+TORCH can be a PINE TORCH or a LUNAR TORCH. The chart below will
+clarify the various types of objects. The types of RINGs, however, will not be
 listed in the chart. You must discover them yourself.
 
 <table>
@@ -86,7 +105,7 @@ listed in the chart. You must discover them yourself.
 <tr><td>RING</td><td>Not Listed.</td></tr>
 </table>
 
-When you first enter the Dungeon, you will be given a backpack containing a 
+When you first enter the Dungeon, you will be given a backpack containing a
 PINE TORCH and a WOODEN SWORD.
 
 A popular start is as follows:<br/>
@@ -102,11 +121,11 @@ T L<br/>
 CHEATS | EFFECT
 --- | ---
 SETCHEAT NONE | Disable all active cheats.
-SETCHEAT ITEMS | 
-SETCHEAT INVULNERABLE | 
-SETCHEAT CRTSCALE | 
-SETCHEAT REVEAL | 
-SETCHEAT RING | 
-SETCHEAT TORCH | 
+SETCHEAT ITEMS |
+SETCHEAT INVULNERABLE |
+SETCHEAT CRTSCALE |
+SETCHEAT REVEAL |
+SETCHEAT RING |
+SETCHEAT TORCH |
 
 For game options press ESC and use arrow keys to navigate the menu. Left/Right will switch between menus.
