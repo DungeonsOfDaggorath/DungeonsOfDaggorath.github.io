@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Nathan Byrd">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="/assets/css/style.css?v=1cac9bccd0db39868d2d9630e16c20716fe1bbeb">
+    <link rel="icon" href="assets/images/favicon.ico">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#dd0d1a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Dungeons of Daggorath">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Dungeons of Daggorath">
+
+    <link rel="apple-touch-icon" href="/assets/images/wizicon48.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/wizicon72.png">
+    <link rel="apple-touch-icon" sizes="96x96" href="/assets/images/wizicon96.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/assets/images/wizicon144.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/assets/images/wizicon192.png">
+
+    <meta name="msapplication-TitleImage" content="/assets/images/manifest/icon-144x144.png">
+    <meta name="msapplication-TitleColor" content="#dd0d1a">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="/assets/css/emscripten.css?v=1cac9bccd0db39868d2d9630e16c20716fe1bbeb">
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>How to Play | Dungeons of Daggorath</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="How to Play" />
+<meta name="author" content="Nathan Byrd" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Webassembly port of the classic Color Computer game, Dungeons of Daggorath" />
+<meta property="og:description" content="Webassembly port of the classic Color Computer game, Dungeons of Daggorath" />
+<link rel="canonical" href="http://daggorath.online/how.html" />
+<meta property="og:url" content="http://daggorath.online/how.html" />
+<meta property="og:site_name" content="Dungeons of Daggorath" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Nathan Byrd"},"headline":"How to Play","description":"Webassembly port of the classic Color Computer game, Dungeons of Daggorath","url":"http://daggorath.online/how.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    
+    <script>
+			if ("serviceWorker" in navigator) {
+				if (navigator.serviceWorker.controller) {
+					console.log("An active service worker found, no need to register");
+				} else {
+					// Register the service worker
+					navigator.serviceWorker
+					.register("/serviceworker.js", {
+						scope: "./"
+					})
+					.then(function (reg) {
+						console.log("Service worker has been registered for scope: " + reg.scope);
+					});
+				}
+			}
+    </script>
+  </head>
+
+  <body>
+
+    <header>
+			<div class="container">
+				<picture style="float:left;">
+					<source type="image/webp" srcset="assets/images/dodtext300.webp" media="(min-width: 300px)" title="Dungeons of Daggorath">
+					<source type="image/png" srcset="assets/images/dodtext300.png" media="(min-width: 300px)" title="Dungeons of Daggorath">
+					<a href="index.html"><img src="assets/images/dodtext300.png" alt="Dungeons of Daggorath"></a>
+				</picture>
+
+				<section id="downloads">
+					
+					<a href="about.html" class="btn" style="float:right">About</a>
+					<a href="how.html" class="btn" style="float:right">How to Play</a>
+					<a href="https://github.com/DungeonsOfDaggorath/DungeonsOfDaggorath.github.io" class="btn btn-github" style="float:right"><span class="icon"></span>View on GitHub</a>
+				</section>
+				<br clear="both">
+			</div>
+		</header>
+
+		<div class="container">
+			<section id="main_content">
+				<h2 id="how-to-play">How to play</h2>
+
+<p>Some of the following information has been extracted from <a href="https://archive.org/stream/Dungeons_of_Daggorath_1983_Tandy/Dungeons_of_Daggorath_1983_Tandy_djvu.txt">Daggorath 1983</a></p>
+
+<table>
+<tr><th>Command</th><th width="150">Modifiers</th><th width="140">Abbreviation<br />Example</th></tr>
+<tr><td>MOVE</td><td>[None]<br /> BACK<br /> LEFT<br /> RIGHT</td><td>M<br /> M B<br /> M L<br /> M R</td></tr><tr><td colspan="3">Step one cell in direction</td></tr>
+<tr><td>TURN</td><td>LEFT<br /> RIGHT<br /> AROUND</td><td>T L<br /> T R<br /> T A</td></tr><tr><td colspan="3">Turn in current cell</td></tr>
+<tr><td>CLIMB</td><td>UP<br /> DOWN</td><td>C U<br /> C D</td></tr><tr><td colspan="3">Climb up a ladder. Climb down a ladder or a hole.</td></tr>
+<tr><td>EXAMINE</td><td>[None]</td><td>E</td></tr><tr><td colspan="3">Show a list of items on the floor of the cell you occupy plus a list of everything you are carrying in your backpack.</td></tr>
+<tr><td>LOOK</td><td>[None]</td><td>L</td></tr><tr><td colspan="3">Look at the Dungeon after an EXAMINE command.</td></tr>
+<tr><td>GET</td><td>[HAND] [ITEM]</td><td>G R T<br /> G L SW</td></tr><tr><td colspan="3">Get an object from the floor with your left or right hand. Note: The object you type must be on the floor of the cell you occupy, and the hand you choose must be empty.</td></tr>
+<tr><td>PULL</td><td>[HAND] [ITEM]</td><td>P R T<br /> P L SW</td></tr><tr><td colspan="3">Pull an object from your backpack. Note: The object you type must be in your backpack, and the hand you choose must be empty.</td></tr>
+<tr><td>STOW</td><td>[HAND]</td><td>S R<br /> S L</td></tr><tr><td colspan="3">Stow the object in your hand into your backpack.</td></tr>
+<tr><td>DROP</td><td>[HAND]</td><td>D L<br /> D R</td></tr><tr><td colspan="3">Drop the object in your hand to the floor.</td></tr>
+<tr><td>ATTACK</td><td>[HAND]</td><td>A L<br /> A R</td></tr><tr><td colspan="3">Attack with the object in your hand.</td></tr>
+<tr><td>USE</td><td>[HAND]</td><td>U L<br /> U R</td></tr><tr><td colspan="3">Use the object in your hand.</td></tr>
+<tr><td>REVEAL</td><td>[HAND]</td><td>R L<br /> R R</td></tr><tr><td colspan="3">Attempt to reveal the type of object in your hand.</td></tr>
+<tr><td>INCANT</td><td>[MAGIC WORD]</td><td>I STEEL</td></tr><tr><td colspan="3">Attempt to conjure up the magic power of a RING by incanting its magical name. Note: When you INCANT, type only the single wotd you are incanting, such as INCANT STEEL.</td></tr>
+<tr><td>ZSAVE</td><td>[SAVE NAME]</td><td>ZS SAVEONE</td></tr><tr><td colspan="3">Saves your game.</td></tr>
+<tr><td>ZLOAD</td><td>[SAVE NAME]</td><td>ZL SAVEONE</td></tr><tr><td colspan="3">Loads your game.</td></tr>
+<tr><td>RESTART</td><td>[None]</td><td>RESTART</td></tr><tr><td colspan="3">Restarts from the beginning.</td></tr>
+</table>
+
+<p>There are several types within each of these object classes. For example, a 
+TORCH can be a PINE TORCH or a LUNAR TORCH. The chart below will 
+clarify the various types of objects. The types of RINGs, however, will not be 
+listed in the chart. You must discover them yourself.</p>
+
+<table>
+<tr><th>Item</th><th>Revealed Items</th></tr>
+<tr><td>TORCH</td><td>PINE, LUNAR, SOLAR</td></tr>
+<tr><td>SWORD</td><td>WOODEN, IRON, ELVISH</td></tr>
+<tr><td>SHIELD</td><td>LEATHER, BRONZE, MITHRIL</td></tr>
+<tr><td>FLASK</td><td>HALE, ABYE, THEWS</td></tr>
+<tr><td>SCROLL</td><td>VISION, SEER</td></tr>
+<tr><td>RING</td><td>Not Listed.</td></tr>
+</table>
+
+<p>When you first enter the Dungeon, you will be given a backpack containing a 
+PINE TORCH and a WOODEN SWORD.</p>
+
+<p>A popular start is as follows:<br />
+M<br />
+M<br />
+M<br />
+M<br />
+P R T<br />
+U R<br />
+P L SW<br />
+T L<br /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>CHEATS</th>
+      <th>EFFECT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>SETCHEAT NONE</td>
+      <td>Disable all active cheats.</td>
+    </tr>
+    <tr>
+      <td>SETCHEAT ITEMS</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SETCHEAT INVULNERABLE</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SETCHEAT CRTSCALE</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SETCHEAT REVEAL</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SETCHEAT RING</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>SETCHEAT TORCH</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>For game options press ESC and use arrow keys to navigate the menu. Left/Right will switch between menus.</p>
+
+			</section>
+		</div>
+
+  
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-33986051-2', 'auto');
+        ga('send', 'pageview');
+      </script>
+    
+  </body>
+</html>
