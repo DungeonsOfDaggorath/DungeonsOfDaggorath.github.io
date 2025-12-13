@@ -1,0 +1,103 @@
+      .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+
+      body {
+        font-size: 20px;
+      }
+
+      .btn-lg {
+          font-size: 1.25rem;
+          line-height: 1.5;
+      }
+
+      .btn {
+          margin: 10px !important;
+      }
+
+      .menu_items {
+        text-align: center;
+      }
+
+      #info a {
+        display: block;
+      }
+
+      #info * {
+          margin-bottom: 1em;
+      }
+
+      #button_area {
+        display: none;
+      }
+
+      #second_area {
+        display: none;
+      }
+
+      #inventory_area {
+        display: none;
+      }
+
+      #installapp {
+        display: none;
+      }
+
+
+      #game_area {
+          width: 100%;
+          overflow: hidden;
+      }
+      .column_width {
+          margin: 0 auto;
+          max-width: 1200px;
+      }
+      #game_area .width_sizer {
+          max-width: 133vh;
+          margin: 0 auto;
+          width: 100%;
+          height: 100%;
+      }
+
+      #frame {
+          display:none;
+          position: relative;
+          overflow: hidden;
+          background: #000;
+          padding-bottom: 70%;
+          width: 100%;
+          height: 100%;
+      }
+      div.emscripten { text-align: center; }
+      /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+      canvas.emscripten { touch-action: none; overflow: hidden; border: 0px none; background-color: black; position: absolute; top: 0; left: 0; width: 100%; height: 100% }
+
+      .spinner {
+        height: 50px;
+        width: 50px;
+        margin: 0px auto;
+        -webkit-animation: rotation .8s linear infinite;
+        -moz-animation: rotation .8s linear infinite;
+        -o-animation: rotation .8s linear infinite;
+        animation: rotation 0.8s linear infinite;
+        border-left: 10px solid rgb(0,150,240);
+        border-right: 10px solid rgb(0,150,240);
+        border-bottom: 10px solid rgb(0,150,240);
+        border-top: 10px solid rgb(100,0,200);
+        border-radius: 100%;
+        background-color: rgb(200,100,250);
+      }
+      @-webkit-keyframes rotation {
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+      }
+      @-moz-keyframes rotation {
+        from {-moz-transform: rotate(0deg);}
+        to {-moz-transform: rotate(360deg);}
+      }
+      @-o-keyframes rotation {
+        from {-o-transform: rotate(0deg);}
+        to {-o-transform: rotate(360deg);}
+      }
+      @keyframes rotation {
+        from {transform: rotate(0deg);}
+        to {transform: rotate(360deg);}
+      }
