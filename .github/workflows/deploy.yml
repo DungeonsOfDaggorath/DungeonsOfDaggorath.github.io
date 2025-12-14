@@ -1,0 +1,158 @@
+# GitHub Actions workflow for deploying to GitHub Pages
+# - master branch: deploys to site root
+# - other branches: deploys to /preview/<branch-name>/ subdirectory
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches-ignore:
+      - gh-pages      # don't recurse when we update gh-pages as storage
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages and
+# to update the gh-pages branch (used as persistent storage for previews).
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# GitHub Pages is a single deployment target; serialize deployments globally.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Determine deployment type
+        id: deployment-type
+        run: |
+          if [ "${{ github.ref_name }}" = "master" ]; then
+            echo "is_master=true" >> $GITHUB_OUTPUT
+            echo "baseurl=" >> $GITHUB_OUTPUT
+            echo "deploy_path=" >> $GITHUB_OUTPUT
+            echo "safe_branch=master" >> $GITHUB_OUTPUT
+          else
+            # Sanitize branch name for use in URL path
+            SAFE_BRANCH=$(echo "${{ github.ref_name }}" | sed 's/[^a-zA-Z0-9_-]/-/g')
+            echo "is_master=false" >> $GITHUB_OUTPUT
+            echo "baseurl=/preview/${SAFE_BRANCH}" >> $GITHUB_OUTPUT
+            echo "deploy_path=preview/${SAFE_BRANCH}" >> $GITHUB_OUTPUT
+            echo "safe_branch=${SAFE_BRANCH}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          # github-pages 203 pins jekyll 3.8.5, which is not compatible with Ruby 3.x
+          # (keyword-args changes cause "no implicit conversion of Hash into Integer").
+          ruby-version: '2.7'
+          bundler: '2.4.22'
+          bundler-cache: true
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build Jekyll site (master)
+        if: steps.deployment-type.outputs.is_master == 'true'
+        run: |
+          bundle exec jekyll build --destination _site
+        env:
+          JEKYLL_ENV: production
+          # Required for jekyll-github-metadata in CI to resolve repo/baseurl/build_revision
+          PAGES_REPO_NWO: ${{ github.repository }}
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Jekyll site (branch preview)
+        if: steps.deployment-type.outputs.is_master == 'false'
+        run: |
+          bundle exec jekyll build \
+            --baseurl "${{ steps.deployment-type.outputs.baseurl }}" \
+            --destination _site
+        env:
+          JEKYLL_ENV: production
+          # Required for jekyll-github-metadata in CI to resolve repo/baseurl/build_revision
+          PAGES_REPO_NWO: ${{ github.repository }}
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Clone gh-pages branch (persistent storage)
+        if: github.event_name == 'push'
+        run: |
+          # Clone gh-pages into /tmp to keep it completely separate from main checkout
+          rm -rf /tmp/gh-pages-work
+          git clone --single-branch --branch gh-pages --depth 1 \
+            "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            /tmp/gh-pages-work
+          cd /tmp/gh-pages-work
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update gh-pages content (master -> root, preserve previews)
+        if: steps.deployment-type.outputs.is_master == 'true' && github.event_name == 'push'
+        run: |
+          # Replace site root with the new build, but keep existing previews/
+          rsync -a --delete --exclude 'preview/' --exclude '.git/' _site/ /tmp/gh-pages-work/
+
+      - name: Update gh-pages content (branch -> preview/<branch>)
+        if: steps.deployment-type.outputs.is_master == 'false' && github.event_name == 'push'
+        run: |
+          TARGET_DIR="/tmp/gh-pages-work/${{ steps.deployment-type.outputs.deploy_path }}"
+          mkdir -p "$TARGET_DIR"
+          rsync -a --delete _site/ "$TARGET_DIR/"
+
+          # Ensure preview index exists
+          mkdir -p /tmp/gh-pages-work/preview
+          if [ ! -f /tmp/gh-pages-work/preview/index.html ]; then
+            echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Preview Builds</title></head><body><h1>Preview Builds</h1><p>Branch previews are available at /preview/&lt;branch-name&gt;/</p></body></html>' > /tmp/gh-pages-work/preview/index.html
+          fi
+
+      - name: Commit and push gh-pages updates (push events only)
+        if: github.event_name == 'push'
+        working-directory: /tmp/gh-pages-work
+        run: |
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No gh-pages changes to commit."
+            exit 0
+          fi
+          git commit -m "Update Pages content from ${GITHUB_REF_NAME} (${GITHUB_SHA})"
+          git push origin gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Pages artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: /tmp/gh-pages-work
+
+    outputs:
+      is_master: ${{ steps.deployment-type.outputs.is_master }}
+      deploy_path: ${{ steps.deployment-type.outputs.deploy_path }}
+      safe_branch: ${{ steps.deployment-type.outputs.safe_branch }}
+
+  deploy:
+    if: github.event_name == 'push'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
