@@ -1,0 +1,34 @@
+Daggorath PC-Port
+Version 0.5.0
+
+==========
+
+The copyright for Dungeons of Daggorath is still held by the original author, Douglas J. Morgan.
+(c) 1982, DynaMicro
+
+==========
+
+The following is taken directly from http://members.tripod.com/~Frodpod/lisence.html
+Grant of license to reproduce Dungeons of Daggorath
+
+My name is Douglas J. Morgan.  I was the president of DynaMicro, Inc. (since dissolved), the company which conceived, created and wrote Dungeons of Daggorath, a best selling Radio Shack Color Computer adventure game.
+
+I have examined the contract I signed with Radio Shack for their license of the game.  The contract provides that Radio Shack shall have an exclusive license to manufacture and produce the game, but that said exclusive license shall revert to a non-exclusive license should Radio Shack cease to produce and sell the game.  To the best of my knowledge, they have not produced the game for many years.  Thus, it is my belief that the right to grant a license for the game has reverted to me.
+
+I hereby grant a non-exclusive permanent world-wide license to any and all Color Computer site administrators, emulator developers, programmers or any other person or persons who wish to develop, produce, duplicate, emulate, or distribute the game on the sole condition that they exercise every effort to preserve the game insofar as possible in its original and unaltered form.
+
+The game was a labor of love.  Additional credits to Phillip C. Landmeier - who was my partner and who originally conceived the vision of the game and was responsible for the (then) state of the art sounds and realism, to April Landmeier, his wife - the artist who drew all the creatures as well as all the artwork for the manual and game cover, and to Keith Kiyohara - a gifted programmer who helped write the original game and then contributed greatly to compressing a 16K game into 8K so that it could be carried and produced by Radio Shack.
+
+The game did very well for us.  I give it to the world with thanks to all who bought it, played it or enjoyed it.
+
+There is one existing copy of the original source code.  Anyone willing to pay for the copying of the listing (at Kinko's) and shipment to them, who intends to use it to enhance or improve the emulator versions of the game is welcome to it.
+
+Verification of this license grant or requests for the listing can be made by contacting Louis Jordan,   Thank you.
+
+==========
+
+This product makes extensive use of the Simple DirectMedia Layer 2 library (SDL 2.0). SDL 2.0 is distributed under the zlib license. This license allows you to use SDL freely in any software. It also uses the SDL_Mixer library, which likewise is licensed under the zlib license.
+
+You can find the zlib license in the file SDL2_LICENSE.txt in this directory.
+
+The zlib license applys to SDL and SDL_Mixer, not to the Daggorath PC-Port Project.
