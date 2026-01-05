@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang=" en-US">
+
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Nathan Byrd">
+
+  <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+  <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  <link rel="stylesheet" href="/preview/feature-controls/assets/css/style.css?v=cfe7949f9c9dea6af35654f6157ccfae22f17e2d">
+  <link rel="icon" href="/preview/feature-controls/assets/images/favicon.ico">
+  <link rel="manifest" href="/preview/feature-controls/manifest.json">
+  <meta name="theme-color" content="#dd0d1a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Dungeons of Daggorath">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Dungeons of Daggorath">
+
+  <link rel="apple-touch-icon" href="/preview/feature-controls/assets/images/wizicon48.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/preview/feature-controls/assets/images/wizicon72.png">
+  <link rel="apple-touch-icon" sizes="96x96" href="/preview/feature-controls/assets/images/wizicon96.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/preview/feature-controls/assets/images/wizicon144.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="/preview/feature-controls/assets/images/wizicon192.png">
+
+  <meta name="msapplication-TitleImage" content="/preview/feature-controls/assets/images/wizicon144.png">
+  <meta name="msapplication-TitleColor" content="#dd0d1a">
+  <meta name="msapplication-tap-highlight" content="no">
+  <link rel="stylesheet"
+    href="/preview/feature-controls/assets/css/emscripten.css?v=cfe7949f9c9dea6af35654f6157ccfae22f17e2d">
+
+  <!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>About this port | Dungeons of Daggorath</title>
+<meta name="generator" content="Jekyll v3.8.5" />
+<meta property="og:title" content="About this port" />
+<meta name="author" content="Nathan Byrd" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Webassembly port of the classic Color Computer game, Dungeons of Daggorath" />
+<meta property="og:description" content="Webassembly port of the classic Color Computer game, Dungeons of Daggorath" />
+<link rel="canonical" href="http://daggorath.online/preview/feature-controls/about.html" />
+<meta property="og:url" content="http://daggorath.online/preview/feature-controls/about.html" />
+<meta property="og:site_name" content="Dungeons of Daggorath" />
+<script type="application/ld+json">
+{"author":{"@type":"Person","name":"Nathan Byrd"},"headline":"About this port","description":"Webassembly port of the classic Color Computer game, Dungeons of Daggorath","url":"http://daggorath.online/preview/feature-controls/about.html","@type":"WebPage","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      if (navigator.serviceWorker.controller) {
+        console.log("An active service worker found, no need to register");
+      } else {
+        // Register the service worker with proper baseurl handling
+        var baseUrl = "/preview/feature-controls";
+        var swPath = baseUrl + "/serviceworker.js";
+        var swScope = baseUrl + "/";
+        // Handle root case where baseurl is empty
+        if (baseUrl === "") {
+          swPath = "/serviceworker.js";
+          swScope = "/";
+        }
+        navigator.serviceWorker
+          .register(swPath, {
+            scope: swScope
+          })
+          .then(function (reg) {
+            console.log("Service worker has been registered for scope: " + reg.scope);
+          });
+      }
+    }
+  </script>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <picture style="float:left;">
+        <source type="image/webp" srcset="assets/images/dodtext300.webp" media="(min-width: 300px)"
+          title="Dungeons of Daggorath">
+        <source type="image/png" srcset="assets/images/dodtext300.png" media="(min-width: 300px)"
+          title="Dungeons of Daggorath">
+        <a href="index.html"><img src="assets/images/dodtext300.png"
+            alt="Dungeons of Daggorath"></a>
+      </picture>
+
+      <section id="downloads">
+        
+        <a href="about.html" class="btn" style="float:right">About</a>
+        <a href="how.html" class="btn" style="float:right">How to Play</a>
+        <a href="https://github.com/DungeonsOfDaggorath/DungeonsOfDaggorath.github.io" class="btn btn-github" style="float:right"><span
+            class="icon"></span>View on GitHub</a>
+      </section>
+      <br clear="both">
+    </div>
+  </header>
+
+  <div class="container">
+    <section id="main_content">
+      <h2 id="i-dare-ye-enter-the-dungeons-of-daggorath">I dare ye enter the Dungeons of Daggorath</h2>
+
+<p>The first computer we got when I was a child was a Tandy Color Computer 2.  I fell in love with the infinite possibilites offered by having a computer in the home, particularly around entertainment and learning.  From this system I first learned how to program.  And yes, I played games.  My favorite game was one of the first single player games, written by DynaMicro Inc., named Dungeons of Daggorath.</p>
+
+<p>With this port of Dungeons of Daggorath to the web I am merely standing on the shoulders of giants.  Some of these giants include:</p>
+
+<ul>
+  <li>Douglas J. Morgan and the team at DynaMicro that wrote the original game and <a href="http://frodpod.tripod.com/lisence.html">released the source</a></li>
+  <li><a href="https://github.com/jamieleecho/DungeonsOfDaggorath/tree/master/Dungeons%20of%20Daggorath">PC Port</a> by Richard Hunerlach</li>
+  <li><a href="https://github.com/BlatantlyX/DungeonsOfDaggorath">SDL 2 Port</a> by “BlatantlyX”</li>
+  <li>… and many others.</li>
+</ul>
+
+<h2 id="what-is-dungeons-of-daggorath">What is Dungeons of Daggorath?</h2>
+
+<p>Others have better descriptions than I can offer here.  See <a href="http://iloveglory.freehostia.com/daggorath/index.html">The Dungeons of Daggorath Video Game</a> for more information.</p>
+
+<p>See below for a great video guide about Dungeons of Daggorath by Retro Hack Shack:</p>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/JZcI-3ELs4g" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+
+<h2 id="so-what-is-this-port">So what is this port?</h2>
+
+<p>This port takes the SDL 2 Port and makes the necessary changes to run it under WebAssembly.  For now this is a pretty basic/straightforward port - but look for more features going forward (contributions definitely welcome!)</p>
+
+
+    </section>
+  </div>
+
+  
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-33986051-2', 'auto');
+    ga('send', 'pageview');
+  </script>
+  
+</body>
+
+</html>
