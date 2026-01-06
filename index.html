@@ -2,6 +2,12 @@
 layout: default
 ---
 <style>
+/* Prevent horizontal overflow */
+#main_content {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 /* Settings Panel Styles */
 .settings-panel {
   max-width: 600px;
@@ -10,6 +16,7 @@ layout: default
   border: 1px solid #333;
   border-radius: 4px;
   text-align: left;
+  box-sizing: border-box;
 }
 
 .settings-section {
@@ -69,6 +76,7 @@ layout: default
   color: #eaeaea;
   font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
   font-size: 14px;
+  word-break: break-word;
 }
 
 .settings-content label:hover {
@@ -206,9 +214,12 @@ layout: default
 }
 
 /* Mobile responsive */
-@media (max-width: 480px) {
+@media (max-width: 600px) {
   .settings-panel {
-    margin: 0.5rem;
+    margin: 0.5rem 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
   }
   .settings-header {
     font-size: 14px;
@@ -219,6 +230,10 @@ layout: default
   }
   .settings-content label {
     font-size: 13px;
+  }
+  .mod-description {
+    margin-left: 32px;
+    font-size: 11px;
   }
   .play-btn {
     font-size: 1.2rem !important;

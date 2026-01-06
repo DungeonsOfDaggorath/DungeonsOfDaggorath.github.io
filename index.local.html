@@ -15,12 +15,14 @@
 
       /* Settings Panel Styles */
       .settings-panel {
+        width: 100%;
         max-width: 600px;
         margin: 1rem auto;
         background: #1a1a1a;
         border: 1px solid #333;
         border-radius: 4px;
         text-align: left;
+        box-sizing: border-box;
       }
       .settings-section {
         border-bottom: 1px solid #333;
@@ -71,6 +73,7 @@
         color: #eaeaea;
         font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
         font-size: 14px;
+        word-break: break-word;
       }
       .settings-content label:hover {
         color: #b5e853;
@@ -192,9 +195,12 @@
         margin: 0 4px;
       }
 
-      @media (max-width: 480px) {
+      @media (max-width: 600px) {
         .settings-panel {
-          margin: 0.5rem;
+          margin: 0.5rem 0;
+          border-radius: 0;
+          border-left: none;
+          border-right: none;
         }
         .settings-header {
           font-size: 14px;
@@ -205,6 +211,10 @@
         }
         .settings-content label {
           font-size: 13px;
+        }
+        .mod-description {
+          margin-left: 32px;
+          font-size: 11px;
         }
         .play-btn {
           font-size: 1.2rem !important;
