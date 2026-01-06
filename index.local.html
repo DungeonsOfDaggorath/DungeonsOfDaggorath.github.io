@@ -111,6 +111,87 @@
         margin-top: -4px;
         margin-bottom: 8px;
       }
+
+      /* Play Section */
+      .play-section {
+        margin: 1.5rem 0;
+        text-align: center;
+      }
+      .play-btn {
+        font-size: 1.4rem !important;
+        padding: 14px 32px !important;
+        background: #1a1a1a !important;
+        border: 2px solid #b5e853 !important;
+        color: #b5e853 !important;
+        text-shadow: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: all 0.2s ease;
+      }
+      .play-btn:hover {
+        background: #252525 !important;
+        box-shadow: 0 6px 16px rgba(181, 232, 83, 0.3);
+        transform: translateY(-1px);
+      }
+      .play-btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      }
+      .install-link {
+        margin-top: 0.75rem;
+        display: none;
+      }
+      .install-link a {
+        color: #63c0f5;
+        font-size: 0.9rem;
+        text-decoration: none;
+        opacity: 0.8;
+      }
+      .install-link a:hover {
+        opacity: 1;
+        text-decoration: underline;
+      }
+
+      /* Settings Title */
+      .settings-title {
+        padding: 10px 16px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #666;
+        border-bottom: 1px solid #333;
+        background: #1a1a1a;
+      }
+
+      /* Navigation Links */
+      .nav-links {
+        margin-top: 1.5rem;
+        padding: 1rem 0;
+        text-align: center;
+        border-top: 1px solid #333;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 4px 0;
+      }
+      .nav-link {
+        color: #63c0f5;
+        text-decoration: none;
+        font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+        font-size: 14px;
+        padding: 8px 12px;
+        transition: color 0.2s ease;
+        white-space: nowrap;
+      }
+      .nav-link:hover {
+        color: #b5e853;
+        text-decoration: none;
+      }
+      .nav-separator {
+        color: #444;
+        margin: 0 4px;
+      }
+
       @media (max-width: 480px) {
         .settings-panel {
           margin: 0.5rem;
@@ -124,6 +205,16 @@
         }
         .settings-content label {
           font-size: 13px;
+        }
+        .play-btn {
+          font-size: 1.2rem !important;
+          padding: 12px 24px !important;
+        }
+        .nav-separator {
+          display: none;
+        }
+        .nav-link {
+          padding: 10px 16px;
         }
       }
     </style>
@@ -141,8 +232,14 @@
           Start this page with <code>THREAD_POOL_SIZE=4 make serve-local</code> (default port 8080) so that <code>emrun</code> sets the required headers.
         </div>
 
+        <!-- Play Button - Primary Action -->
+        <div class="play-section">
+          <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn play-btn">Play Dungeons of Daggorath</button>
+        </div>
+
         <!-- Settings Panel -->
         <div id="settings_panel" class="settings-panel">
+          <div class="settings-title">Game Options</div>
           <!-- Graphics Section -->
           <div class="settings-section">
             <button class="settings-header" type="button" data-section="graphics">
@@ -197,14 +294,14 @@
           </div>
         </div>
 
-        <p>
-          <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn">Play Dungeons of Daggorath</button>
-        </p>
-        <p>
-          <a href="about.html">About</a>
-          <a href="how.html">How to Play</a>
-          <a href="https://github.com/cognitivegears/DungeonsOfDaggorath.github.io">View on GitHub</a>
-        </p>
+        <!-- Navigation Links -->
+        <nav class="nav-links">
+          <a href="about.html" class="nav-link">About</a>
+          <span class="nav-separator">|</span>
+          <a href="how.html" class="nav-link">How to Play</a>
+          <span class="nav-separator">|</span>
+          <a href="https://github.com/cognitivegears/DungeonsOfDaggorath.github.io" class="nav-link">View on GitHub</a>
+        </nav>
       </section>
     </div>
     <div id="game_area">
