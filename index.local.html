@@ -55,6 +55,14 @@
           </div>
           <div id="second_area"></div>
           <div id="inventory_area"></div>
+          <div id="menu_nav_area" style="display:none;">
+          </div>
+          <div id="incant_input_area" style="display:none;">
+            <label for="incant_word">Enter magic word:</label>
+            <input type="text" id="incant_word" autocomplete="off" autocapitalize="characters" />
+            <button id="incant_go">GO</button>
+            <button id="incant_cancel">CANCEL</button>
+          </div>
         </div>
       </div>
     </div>
@@ -90,10 +98,21 @@
         "DROP": ["LEFT", "RIGHT"],
         "USE": ["LEFT", "RIGHT"],
         "REVEAL": ["LEFT", "RIGHT"],
-        "INCANT": [],
+        "INCANT": "INPUT",  // Special: shows text input
         "ZSAVE": [],
         "ZLOAD": [],
-        "RESTART": []
+        "RESTART": "RESTART"  // Special: stops demo first
+      };
+
+      // SDL2 key codes for menu navigation
+      var SDL_KEYS = {
+        RETURN: 13,
+        ESCAPE: 27,
+        SPACE: 32,
+        UP: 1073741906,
+        DOWN: 1073741905,
+        LEFT: 1073741904,
+        RIGHT: 1073741903
       };
 
       var statusElement = document.getElementById("status");
@@ -153,9 +172,12 @@
       };
 
       var controlHandler = null;
+      var menuCheckHandler = null;
       var isDemoFunc = null;
-      var demoSeen = false;
-      var demoInactiveCount = 0;
+      var isMenuOpenFunc = null;
+      var sendKeyFunc = null;
+      var wasMenuOpen = false;
+
       function updateControls() {
         if (!Module.calledRun) {
           $("#stopdemo").show();
@@ -185,26 +207,80 @@
           $("#button_area").show();
           $("#second_area").hide();
           $("#inventory_area").hide();
+
+          // Start menu state polling
+          if (!menuCheckHandler && typeof isMenuOpenFunc === 'function') {
+            menuCheckHandler = setInterval(checkMenuState, 200);
+          }
+        }
+      }
+
+      function checkMenuState() {
+        if (typeof isMenuOpenFunc !== 'function') return;
+
+        var menuOpen = !!isMenuOpenFunc();
+        if (menuOpen !== wasMenuOpen) {
+          wasMenuOpen = menuOpen;
+          if (menuOpen) {
+            // Menu just opened - show navigation buttons, hide game buttons
+            $("#button_area").hide();
+            $("#second_area").hide();
+            $("#inventory_area").hide();
+            $("#incant_input_area").hide();
+            $("#menu_nav_area").show();
+          } else {
+            // Menu just closed - show game buttons, hide navigation
+            $("#menu_nav_area").hide();
+            $("#button_area").show();
+          }
+        }
+      }
+
+      function showIncantInput() {
+        $("#button_area").hide();
+        $("#incant_input_area").show();
+        var input = document.getElementById('incant_word');
+        input.value = '';
+        input.focus();
+      }
+
+      function hideIncantInput() {
+        $("#incant_input_area").hide();
+        $("#button_area").show();
+      }
+
+      function submitIncant() {
+        var input = document.getElementById('incant_word');
+        var word = input.value.trim().toUpperCase();
+        hideIncantInput();
+        if (word) {
+          Module.ccall('sendinput', 'void', ['string'], ["INCANT " + word + "\r"]);
         }
       }
 
       Module.onRuntimeInitialized = function() {
         isDemoFunc = Module.cwrap("isdemo", "number", []);
+        isMenuOpenFunc = Module.cwrap('ismenuopen', 'number', []);
+        sendKeyFunc = Module.cwrap('sendkey', 'void', ['number']);
       };
 
       $(document).ready(function () {
-    console.log('[document.ready] initializing control visibility', window.getComputedStyle(document.getElementById('stopdemo')).display, window.getComputedStyle(document.getElementById('button_area')).display);
-    $("#stopdemo").hide();
-    $("#button_area").hide();
-    $("#second_area").hide();
-    $("#inventory_area").hide();
-    $("#readyPlayerOne").click(function () {
-      console.log('[readyPlayerOne] clicked');
+        console.log('[document.ready] initializing control visibility', window.getComputedStyle(document.getElementById('stopdemo')).display, window.getComputedStyle(document.getElementById('button_area')).display);
+        $("#stopdemo").hide();
+        $("#button_area").hide();
+        $("#second_area").hide();
+        $("#inventory_area").hide();
+        $("#menu_nav_area").hide();
+        $("#incant_input_area").hide();
+        $("#readyPlayerOne").click(function () {
+          console.log('[readyPlayerOne] clicked');
           $("#stopdemo").show();
           $("#frame").show();
           $("#button_area").hide();
           $("#second_area").hide();
           $("#inventory_area").hide();
+          $("#menu_nav_area").hide();
+          $("#incant_input_area").hide();
           $("#info").hide();
           // Start the control handler to hide the stop demo button
           // when the demo is not active
@@ -217,6 +293,40 @@
           }
         });
 
+        // INCANT input handlers
+        $("#incant_go").click(submitIncant);
+        $("#incant_cancel").click(hideIncantInput);
+        // Use native addEventListener since domlite doesn't support .on()
+        document.getElementById('incant_word').addEventListener('keydown', function(e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            submitIncant();
+          } else if (e.key === 'Escape') {
+            e.preventDefault();
+            hideIncantInput();
+          }
+        });
+
+        // Create menu navigation buttons
+        var menuNavButtons = [
+          { label: '▲', key: SDL_KEYS.UP },
+          { label: '▼', key: SDL_KEYS.DOWN },
+          { label: 'SELECT', key: SDL_KEYS.RETURN },
+          { label: 'BACK', key: SDL_KEYS.ESCAPE }
+        ];
+        for (var nav of menuNavButtons) {
+          (function(keyCode) {
+            var navBtn = $('<button/>')
+              .text(nav.label)
+              .click(function() {
+                if (typeof sendKeyFunc === 'function') {
+                  sendKeyFunc(keyCode);
+                }
+              });
+            $("#menu_nav_area").append(navBtn);
+          })(nav.key);
+        }
+
         var menuButton = $('<button/>')
           .text("MENU")
           .click(function() {
@@ -225,7 +335,6 @@
         $("#button_area").append(menuButton);
 
         $("#stopdemo").click(function () {
-          demoSeen = true;
           Module.ccall('stopdemo', 'void', []);
           $("#stopdemo").hide();
         });
@@ -236,6 +345,19 @@
             .click(function() {
               var curText = $(this).text();
               if (typeof(inputCommands[curText]) !== 'undefined') {
+                // Special case: INCANT shows text input
+                if (inputCommands[curText] === "INPUT") {
+                  showIncantInput();
+                  return;
+                }
+
+                // Special case: RESTART stops demo first then restarts
+                if (inputCommands[curText] === "RESTART") {
+                  Module.ccall('stopdemo', 'void', []);
+                  Module.ccall('sendinput', 'void', ['string'], ["RESTART\r"]);
+                  return;
+                }
+
                 if (inputCommands[curText].length === 0) {
                   Module.ccall('sendinput','void',['string'],[curText + "\r"]);
                   return;
