@@ -1,4 +1,4 @@
-const CACHE = "pwabuilder-offline";
+const CACHE = "pwabuilder-offline-v2";
 
 const offlineFallbackPage = "index.html";
 
@@ -29,10 +29,24 @@ self.addEventListener("install", function (event) {
     );
 });
 
-// Activate stage - claim all clients immediately so we can add headers
+// Activate stage - clean up old caches and claim all clients immediately
 self.addEventListener("activate", function (event) {
     console.log("Activate Event processing");
-    event.waitUntil(self.clients.claim());
+    event.waitUntil(
+        caches.keys().then(function (cacheNames) {
+            return Promise.all(
+                cacheNames.filter(function (cacheName) {
+                    // Delete any cache that isn't our current one
+                    return cacheName !== CACHE;
+                }).map(function (cacheName) {
+                    console.log("Deleting old cache: " + cacheName);
+                    return caches.delete(cacheName);
+                })
+            );
+        }).then(function () {
+            return self.clients.claim();
+        })
+    );
 });
 
 // Helper to add COOP/COEP headers to enable cross-origin isolation
