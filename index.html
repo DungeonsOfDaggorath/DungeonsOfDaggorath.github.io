@@ -11,7 +11,7 @@
   <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-  <link rel="stylesheet" href="/assets/css/style.css?v=5bf8cdb9d871c3ea90e101e6c8c98e211b807130">
+  <link rel="stylesheet" href="/assets/css/style.css?v=7bbbeacf2ec9eb8bdda0b60b4874231ab6131152">
   <link rel="icon" href="/assets/images/favicon.ico">
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#dd0d1a">
@@ -31,7 +31,7 @@
   <meta name="msapplication-TitleColor" content="#dd0d1a">
   <meta name="msapplication-tap-highlight" content="no">
   <link rel="stylesheet"
-    href="/assets/css/emscripten.css?v=5bf8cdb9d871c3ea90e101e6c8c98e211b807130">
+    href="/assets/css/emscripten.css?v=7bbbeacf2ec9eb8bdda0b60b4874231ab6131152">
 
   <!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Dungeons of Daggorath | Webassembly port of the classic Color Computer game, Dungeons of Daggorath</title>
@@ -48,7 +48,7 @@
 {"author":{"@type":"Person","name":"Nathan Byrd"},"headline":"Dungeons of Daggorath","description":"Webassembly port of the classic Color Computer game, Dungeons of Daggorath","url":"http://daggorath.online/","@type":"WebSite","name":"Dungeons of Daggorath","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
-  <script src="/assets/js/domlite.js?v=5bf8cdb9d871c3ea90e101e6c8c98e211b807130"></script>
+  <script src="/assets/js/domlite.js?v=7bbbeacf2ec9eb8bdda0b60b4874231ab6131152"></script>
 
 
   <script>
@@ -100,7 +100,253 @@
     </nav>
     -->
 
-  <div class="container menu_items" id="info">
+  <style>
+/* Prevent horizontal overflow */
+#main_content {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Settings Panel Styles */
+.settings-panel {
+  max-width: 600px;
+  margin: 1rem auto;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.settings-section {
+  border-bottom: 1px solid #333;
+}
+
+.settings-section:last-child {
+  border-bottom: none;
+}
+
+.settings-header {
+  width: 100%;
+  padding: 12px 16px;
+  background: #252525;
+  border: none;
+  color: #b5e853;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 16px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-header:hover {
+  background: #2a2a2a;
+}
+
+.settings-header:focus {
+  outline: 2px solid #b5e853;
+  outline-offset: -2px;
+}
+
+.accordion-arrow {
+  font-size: 18px;
+  font-weight: bold;
+  color: #63c0f5;
+}
+
+.settings-content {
+  display: none;
+  padding: 16px;
+  background: #1a1a1a;
+}
+
+.settings-content.open {
+  display: block;
+}
+
+.settings-content label {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  min-height: 44px;
+  cursor: pointer;
+  color: #eaeaea;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.settings-content label:hover {
+  color: #b5e853;
+}
+
+.settings-content input[type="radio"],
+.settings-content input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: #b5e853;
+}
+
+.settings-content input[type="range"] {
+  width: 100%;
+  height: 8px;
+  margin: 10px 0;
+  cursor: pointer;
+  accent-color: #b5e853;
+}
+
+.volume-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #eaeaea;
+  font-family: Monaco, monospace;
+  font-size: 14px;
+}
+
+.volume-value {
+  color: #b5e853;
+  font-weight: bold;
+  min-width: 40px;
+  text-align: right;
+}
+
+.mod-description {
+  font-size: 12px;
+  color: #888;
+  margin-left: 32px;
+  margin-top: -4px;
+  margin-bottom: 8px;
+}
+
+/* Play Section */
+.play-section {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.play-btn {
+  font-size: 1.4rem !important;
+  padding: 14px 32px !important;
+  background: #1a1a1a !important;
+  border: 2px solid #b5e853 !important;
+  color: #b5e853 !important;
+  text-shadow: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+}
+
+.play-btn:hover {
+  background: #252525 !important;
+  box-shadow: 0 6px 16px rgba(181, 232, 83, 0.3);
+  transform: translateY(-1px);
+}
+
+.play-btn:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.install-link {
+  margin-top: 0.75rem;
+  display: none;
+}
+
+.install-link a {
+  color: #63c0f5;
+  font-size: 0.9rem;
+  text-decoration: none;
+  opacity: 0.8;
+}
+
+.install-link a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* Settings Title */
+.settings-title {
+  padding: 10px 16px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #666;
+  border-bottom: 1px solid #333;
+  background: #1a1a1a;
+}
+
+/* Navigation Links */
+.nav-links {
+  margin-top: 1.5rem;
+  padding: 1rem 0;
+  text-align: center;
+  border-top: 1px solid #333;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 4px 0;
+}
+
+.nav-link {
+  color: #63c0f5;
+  text-decoration: none;
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 14px;
+  padding: 8px 12px;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-link:hover {
+  color: #b5e853;
+  text-decoration: none;
+}
+
+.nav-separator {
+  color: #444;
+  margin: 0 4px;
+}
+
+/* Mobile responsive */
+@media (max-width: 600px) {
+  .settings-panel {
+    margin: 0.5rem 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  .settings-header {
+    font-size: 14px;
+    padding: 10px 12px;
+  }
+  .settings-content {
+    padding: 12px;
+  }
+  .settings-content label {
+    font-size: 13px;
+  }
+  .mod-description {
+    margin-left: 32px;
+    font-size: 11px;
+  }
+  .play-btn {
+    font-size: 1.2rem !important;
+    padding: 12px 24px !important;
+  }
+  .nav-separator {
+    display: none;
+  }
+  .nav-link {
+    padding: 10px 16px;
+  }
+}
+</style>
+<div class="container menu_items" id="info">
   <section id="main_content">
     <picture>
       <source type="image/webp" srcset="assets/images/dodtext300.webp" media="(min-width: 300px)"
@@ -115,13 +361,78 @@
       <code>Cross-Origin-Embedder-Policy: require-corp</code>.
       For local testing with the Emscripten SDK run <code>make serve</code> or <code>make serve-local</code>.
     </div>
-    <p>
-      <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn">Play Dungeons of Daggorath</button><br />
-      <!--  <a id="readyPlayerOne" href="#">Start your engines.</a><br/> -->
-    <div id="installapp"><a href="#" id="install_link">INSTALL</a></div>
-    <a href="about.html">About</a>
-    <a href="how.html">How to Play</a>
-    <a href="https://github.com/DungeonsOfDaggorath/DungeonsOfDaggorath.github.io">View on GitHub</a>
+
+    <!-- Play Button - Primary Action -->
+    <div class="play-section">
+      <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn play-btn">Play Dungeons of Daggorath</button>
+      <div id="installapp" class="install-link"><a href="#" id="install_link">Install App</a></div>
+    </div>
+
+    <!-- Settings Panel -->
+    <div id="settings_panel" class="settings-panel">
+      <div class="settings-title">Game Options</div>
+      <!-- Graphics Section -->
+      <div class="settings-section">
+        <button class="settings-header" type="button" data-section="graphics">
+          Graphics <span class="accordion-arrow">+</span>
+        </button>
+        <div class="settings-content" id="graphics-content">
+          <label><input type="radio" name="graphics_mode" value="normal_ntsc"> NORMAL - NTSC</label>
+          <label><input type="radio" name="graphics_mode" value="normal_ntsc_inv"> NORMAL - NTSC INV</label>
+          <label><input type="radio" name="graphics_mode" value="normal_rgb"> NORMAL - RGB</label>
+          <label><input type="radio" name="graphics_mode" value="hires_ntsc"> HIRES - NTSC</label>
+          <label><input type="radio" name="graphics_mode" value="hires_ntsc_inv"> HIRES - NTSC INV</label>
+          <label><input type="radio" name="graphics_mode" value="hires_rgb"> HIRES - RGB</label>
+          <label><input type="radio" name="graphics_mode" value="vector"> VECTOR</label>
+        </div>
+      </div>
+
+      <!-- Volume Section -->
+      <div class="settings-section">
+        <button class="settings-header" type="button" data-section="volume">
+          Volume <span class="accordion-arrow">+</span>
+        </button>
+        <div class="settings-content" id="volume-content">
+          <div class="volume-display">
+            <span>Volume</span>
+            <span class="volume-value" id="volume-value">128</span>
+          </div>
+          <input type="range" id="volume-slider" name="volume" min="0" max="128" value="128">
+        </div>
+      </div>
+
+      <!-- Mods Section -->
+      <div class="settings-section">
+        <button class="settings-header" type="button" data-section="mods">
+          Mods <span class="accordion-arrow">+</span>
+        </button>
+        <div class="settings-content" id="mods-content">
+          <label><input type="checkbox" name="mod" value="shield_fix"> Shield Fix</label>
+          <div class="mod-description">Fixes shield mechanics bug from original</div>
+          <label><input type="checkbox" name="mod" value="vision_scroll"> Vision Scroll</label>
+          <div class="mod-description">Vision scrolls with map movement</div>
+          <label><input type="checkbox" name="mod" value="mark_doors"> Mark Doors on Maps</label>
+          <div class="mod-description">Shows doors on scroll maps</div>
+          <label><input type="checkbox" name="mod" value="creatures_ignore_objects"> Creatures Ignore Objects</label>
+          <div class="mod-description">Creatures don't interact with objects</div>
+          <label><input type="checkbox" name="mod" value="creatures_insta_regen"> Creatures Insta-Regen</label>
+          <div class="mod-description">Creatures regenerate instantly</div>
+          <label><input type="checkbox" name="mod" value="random_mazes"> Random Mazes</label>
+          <div class="mod-description">Enables random maze generation</div>
+          <label><input type="checkbox" name="mod" value="modern_controls"> Modern Controls</label>
+          <div class="mod-description">Arrow keys + TAB for controls</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Links -->
+    <nav class="nav-links">
+      <a href="about.html" class="nav-link">About</a>
+      <span class="nav-separator">|</span>
+      <a href="how.html" class="nav-link">How to Play</a>
+      <span class="nav-separator">|</span>
+      <a href="https://github.com/DungeonsOfDaggorath/DungeonsOfDaggorath.github.io" class="nav-link">View on GitHub</a>
+    </nav>
   </section>
 </div>
 <div id="game_area">
@@ -191,6 +502,164 @@
     });
   });
 
+  // Game Configuration Module
+  var GameConfig = {
+    validGraphicsModes: ['vector', 'normal_rgb', 'normal_ntsc', 'normal_ntsc_inv', 'hires_rgb', 'hires_ntsc', 'hires_ntsc_inv'],
+    validMods: ['shield_fix', 'vision_scroll', 'mark_doors', 'creatures_ignore_objects', 'creatures_insta_regen', 'random_mazes', 'modern_controls'],
+    validCheats: ['torch_always_lit', 'ring_always_works', 'creature_scaling', 'mithril_items', 'easy_reveal', 'invulnerable'],
+
+    // Parse URL parameters into settings object
+    parseParams: function() {
+      var params = new URLSearchParams(window.location.search);
+      var settings = {
+        graphics_mode: null,
+        volume: null,
+        mods: [],
+        cheats: []
+      };
+
+      // Graphics mode
+      var gm = params.get('graphics_mode');
+      if (gm && this.validGraphicsModes.indexOf(gm) !== -1) {
+        settings.graphics_mode = gm;
+      }
+
+      // Volume
+      var vol = params.get('volume');
+      if (vol !== null) {
+        var v = parseInt(vol, 10);
+        if (!isNaN(v) && v >= 0 && v <= 128) {
+          settings.volume = v;
+        }
+      }
+
+      // Mods (can have multiple)
+      var mods = params.getAll('mod');
+      for (var i = 0; i < mods.length; i++) {
+        if (this.validMods.indexOf(mods[i]) !== -1 && settings.mods.indexOf(mods[i]) === -1) {
+          settings.mods.push(mods[i]);
+        }
+      }
+
+      // Cheats (can have multiple)
+      var cheats = params.getAll('cheat');
+      for (var i = 0; i < cheats.length; i++) {
+        if (this.validCheats.indexOf(cheats[i]) !== -1 && settings.cheats.indexOf(cheats[i]) === -1) {
+          settings.cheats.push(cheats[i]);
+        }
+      }
+
+      return settings;
+    },
+
+    // Build pipe-delimited config string for C++
+    buildConfigString: function(settings) {
+      var parts = [];
+
+      if (settings.graphics_mode) {
+        parts.push('graphics_mode=' + settings.graphics_mode);
+      }
+      if (settings.volume !== null) {
+        parts.push('volume=' + settings.volume);
+      }
+      for (var i = 0; i < settings.mods.length; i++) {
+        parts.push('mod=' + settings.mods[i]);
+      }
+      for (var i = 0; i < settings.cheats.length; i++) {
+        parts.push('cheat=' + settings.cheats[i]);
+      }
+
+      return parts.join('|');
+    },
+
+    // Read current form values
+    readFormValues: function() {
+      var settings = {
+        graphics_mode: null,
+        volume: null,
+        mods: [],
+        cheats: []
+      };
+
+      // Graphics mode (radio)
+      var graphicsRadio = document.querySelector('input[name="graphics_mode"]:checked');
+      if (graphicsRadio) {
+        settings.graphics_mode = graphicsRadio.value;
+      }
+
+      // Volume (range)
+      var volumeSlider = document.getElementById('volume-slider');
+      if (volumeSlider) {
+        settings.volume = parseInt(volumeSlider.value, 10);
+      }
+
+      // Mods (checkboxes)
+      var modCheckboxes = document.querySelectorAll('input[name="mod"]:checked');
+      modCheckboxes.forEach(function(cb) {
+        settings.mods.push(cb.value);
+      });
+
+      return settings;
+    },
+
+    // Update URL with settings (causes page reload)
+    updateUrl: function(settings) {
+      var params = new URLSearchParams();
+
+      if (settings.graphics_mode) {
+        params.set('graphics_mode', settings.graphics_mode);
+      }
+      if (settings.volume !== null && settings.volume !== 128) {
+        params.set('volume', settings.volume);
+      }
+      for (var i = 0; i < settings.mods.length; i++) {
+        params.append('mod', settings.mods[i]);
+      }
+      // Note: cheats are preserved from current URL but not added via GUI
+      var currentCheats = this.parseParams().cheats;
+      for (var i = 0; i < currentCheats.length; i++) {
+        params.append('cheat', currentCheats[i]);
+      }
+
+      var newUrl = window.location.pathname;
+      var paramString = params.toString();
+      if (paramString) {
+        newUrl += '?' + paramString;
+      }
+      window.location.href = newUrl;
+    },
+
+    // Initialize form with current URL params
+    initializeForm: function() {
+      var settings = this.parseParams();
+
+      // Set graphics mode radio (default to normal_ntsc if not set)
+      var graphicsValue = settings.graphics_mode || 'normal_ntsc';
+      var graphicsRadio = document.querySelector('input[name="graphics_mode"][value="' + graphicsValue + '"]');
+      if (graphicsRadio) {
+        graphicsRadio.checked = true;
+      }
+
+      // Set volume slider (default to 128)
+      var volumeSlider = document.getElementById('volume-slider');
+      var volumeDisplay = document.getElementById('volume-value');
+      var volumeValue = settings.volume !== null ? settings.volume : 128;
+      if (volumeSlider) {
+        volumeSlider.value = volumeValue;
+      }
+      if (volumeDisplay) {
+        volumeDisplay.textContent = volumeValue;
+      }
+
+      // Set mod checkboxes
+      for (var i = 0; i < settings.mods.length; i++) {
+        var modCheckbox = document.querySelector('input[name="mod"][value="' + settings.mods[i] + '"]');
+        if (modCheckbox) {
+          modCheckbox.checked = true;
+        }
+      }
+    }
+  };
 
   var inputCommands = {
     "MOVE": ["FORWARD", "BACK", "LEFT", "RIGHT"],
@@ -346,6 +815,59 @@
     $("#inventory_area").hide();
     $("#menu_nav_area").hide();
     $("#incant_input_area").hide();
+
+    // Initialize settings form from URL params
+    GameConfig.initializeForm();
+
+    // Accordion toggle handlers
+    document.querySelectorAll('.settings-header').forEach(function(header) {
+      header.addEventListener('click', function() {
+        var section = this.getAttribute('data-section');
+        var content = document.getElementById(section + '-content');
+        var arrow = this.querySelector('.accordion-arrow');
+
+        if (content.classList.contains('open')) {
+          content.classList.remove('open');
+          arrow.textContent = '+';
+        } else {
+          // Close all others first
+          document.querySelectorAll('.settings-content').forEach(function(c) {
+            c.classList.remove('open');
+          });
+          document.querySelectorAll('.accordion-arrow').forEach(function(a) {
+            a.textContent = '+';
+          });
+          content.classList.add('open');
+          arrow.textContent = '-';
+        }
+      });
+    });
+
+    // Volume slider real-time display update
+    var volumeSlider = document.getElementById('volume-slider');
+    var volumeDisplay = document.getElementById('volume-value');
+    if (volumeSlider && volumeDisplay) {
+      volumeSlider.addEventListener('input', function() {
+        volumeDisplay.textContent = this.value;
+      });
+    }
+
+    // Form change handlers - update URL on change (for radio/checkbox)
+    document.querySelectorAll('#settings_panel input[type="radio"], #settings_panel input[type="checkbox"]').forEach(function(input) {
+      input.addEventListener('change', function() {
+        var settings = GameConfig.readFormValues();
+        GameConfig.updateUrl(settings);
+      });
+    });
+
+    // Volume slider - update URL only on release (mouseup/touchend) to avoid rapid reloads
+    if (volumeSlider) {
+      volumeSlider.addEventListener('change', function() {
+        var settings = GameConfig.readFormValues();
+        GameConfig.updateUrl(settings);
+      });
+    }
+
     $("#readyPlayerOne").click(function () {
       console.log('[readyPlayerOne] clicked');
       $("#stopdemo").show();
@@ -361,6 +883,21 @@
       } else if (Module._main) {
         Module._main();
       }
+
+      // Apply URL configuration AFTER game initialization
+      // (loadOptFile has already run, so we can override settings)
+      try {
+        var applyConfigFunc = Module.cwrap('applyconfig', 'void', ['string']);
+        var settings = GameConfig.parseParams();
+        var configStr = GameConfig.buildConfigString(settings);
+        if (configStr) {
+          console.log('[Game] Applying config:', configStr);
+          applyConfigFunc(configStr);
+        }
+      } catch (e) {
+        console.warn('[Game] Could not apply config:', e);
+      }
+
       // Set interval to check for demo status
       // to remove the stop demo button when the
       // demo is no longer active

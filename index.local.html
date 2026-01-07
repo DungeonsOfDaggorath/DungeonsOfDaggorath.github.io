@@ -12,6 +12,221 @@
       body { margin: 0; background-color: #0e0303; color: #f8f8f2; }
       .local-warning { margin: 1rem auto; max-width: 900px; padding: 1rem; border: 1px solid #f0ad4e; background: rgba(240,173,78,0.15); }
       .local-warning code { background: rgba(0,0,0,0.3); padding: 0.15rem 0.3rem; border-radius: 3px; }
+
+      /* Settings Panel Styles */
+      .settings-panel {
+        width: 100%;
+        max-width: 600px;
+        margin: 1rem auto;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 4px;
+        text-align: left;
+        box-sizing: border-box;
+      }
+      .settings-section {
+        border-bottom: 1px solid #333;
+      }
+      .settings-section:last-child {
+        border-bottom: none;
+      }
+      .settings-header {
+        width: 100%;
+        padding: 12px 16px;
+        background: #252525;
+        border: none;
+        color: #b5e853;
+        font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+        font-size: 16px;
+        text-align: left;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .settings-header:hover {
+        background: #2a2a2a;
+      }
+      .settings-header:focus {
+        outline: 2px solid #b5e853;
+        outline-offset: -2px;
+      }
+      .accordion-arrow {
+        font-size: 18px;
+        font-weight: bold;
+        color: #63c0f5;
+      }
+      .settings-content {
+        display: none;
+        padding: 16px;
+        background: #1a1a1a;
+      }
+      .settings-content.open {
+        display: block;
+      }
+      .settings-content label {
+        display: flex;
+        align-items: center;
+        padding: 8px 0;
+        min-height: 44px;
+        cursor: pointer;
+        color: #eaeaea;
+        font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+        font-size: 14px;
+        word-break: break-word;
+      }
+      .settings-content label:hover {
+        color: #b5e853;
+      }
+      .settings-content input[type="radio"],
+      .settings-content input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        cursor: pointer;
+        accent-color: #b5e853;
+      }
+      .settings-content input[type="range"] {
+        width: 100%;
+        height: 8px;
+        margin: 10px 0;
+        cursor: pointer;
+        accent-color: #b5e853;
+      }
+      .volume-display {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #eaeaea;
+        font-family: Monaco, monospace;
+        font-size: 14px;
+      }
+      .volume-value {
+        color: #b5e853;
+        font-weight: bold;
+        min-width: 40px;
+        text-align: right;
+      }
+      .mod-description {
+        font-size: 12px;
+        color: #888;
+        margin-left: 32px;
+        margin-top: -4px;
+        margin-bottom: 8px;
+      }
+
+      /* Play Section */
+      .play-section {
+        margin: 1.5rem 0;
+        text-align: center;
+      }
+      .play-btn {
+        font-size: 1.4rem !important;
+        padding: 14px 32px !important;
+        background: #1a1a1a !important;
+        border: 2px solid #b5e853 !important;
+        color: #b5e853 !important;
+        text-shadow: none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: all 0.2s ease;
+      }
+      .play-btn:hover {
+        background: #252525 !important;
+        box-shadow: 0 6px 16px rgba(181, 232, 83, 0.3);
+        transform: translateY(-1px);
+      }
+      .play-btn:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      }
+      .install-link {
+        margin-top: 0.75rem;
+        display: none;
+      }
+      .install-link a {
+        color: #63c0f5;
+        font-size: 0.9rem;
+        text-decoration: none;
+        opacity: 0.8;
+      }
+      .install-link a:hover {
+        opacity: 1;
+        text-decoration: underline;
+      }
+
+      /* Settings Title */
+      .settings-title {
+        padding: 10px 16px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #666;
+        border-bottom: 1px solid #333;
+        background: #1a1a1a;
+      }
+
+      /* Navigation Links */
+      .nav-links {
+        margin-top: 1.5rem;
+        padding: 1rem 0;
+        text-align: center;
+        border-top: 1px solid #333;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 4px 0;
+      }
+      .nav-link {
+        color: #63c0f5;
+        text-decoration: none;
+        font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+        font-size: 14px;
+        padding: 8px 12px;
+        transition: color 0.2s ease;
+        white-space: nowrap;
+      }
+      .nav-link:hover {
+        color: #b5e853;
+        text-decoration: none;
+      }
+      .nav-separator {
+        color: #444;
+        margin: 0 4px;
+      }
+
+      @media (max-width: 600px) {
+        .settings-panel {
+          margin: 0.5rem 0;
+          border-radius: 0;
+          border-left: none;
+          border-right: none;
+        }
+        .settings-header {
+          font-size: 14px;
+          padding: 10px 12px;
+        }
+        .settings-content {
+          padding: 12px;
+        }
+        .settings-content label {
+          font-size: 13px;
+        }
+        .mod-description {
+          margin-left: 32px;
+          font-size: 11px;
+        }
+        .play-btn {
+          font-size: 1.2rem !important;
+          padding: 12px 24px !important;
+        }
+        .nav-separator {
+          display: none;
+        }
+        .nav-link {
+          padding: 10px 16px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -26,14 +241,77 @@
           <strong>Cross-origin isolation required.</strong> The threaded WebAssembly build needs SharedArrayBuffer support.
           Start this page with <code>THREAD_POOL_SIZE=4 make serve-local</code> (default port 8080) so that <code>emrun</code> sets the required headers.
         </div>
-        <p>
-          <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn">Play Dungeons of Daggorath</button>
-        </p>
-        <p>
-          <a href="about.html">About</a>
-          <a href="how.html">How to Play</a>
-          <a href="https://github.com/cognitivegears/DungeonsOfDaggorath.github.io">View on GitHub</a>
-        </p>
+
+        <!-- Play Button - Primary Action -->
+        <div class="play-section">
+          <button id="readyPlayerOne" type="button" class="btn-lg btn-primary btn play-btn">Play Dungeons of Daggorath</button>
+        </div>
+
+        <!-- Settings Panel -->
+        <div id="settings_panel" class="settings-panel">
+          <div class="settings-title">Game Options</div>
+          <!-- Graphics Section -->
+          <div class="settings-section">
+            <button class="settings-header" type="button" data-section="graphics">
+              Graphics <span class="accordion-arrow">+</span>
+            </button>
+            <div class="settings-content" id="graphics-content">
+              <label><input type="radio" name="graphics_mode" value="normal_ntsc"> NORMAL - NTSC</label>
+              <label><input type="radio" name="graphics_mode" value="normal_ntsc_inv"> NORMAL - NTSC INV</label>
+              <label><input type="radio" name="graphics_mode" value="normal_rgb"> NORMAL - RGB</label>
+              <label><input type="radio" name="graphics_mode" value="hires_ntsc"> HIRES - NTSC</label>
+              <label><input type="radio" name="graphics_mode" value="hires_ntsc_inv"> HIRES - NTSC INV</label>
+              <label><input type="radio" name="graphics_mode" value="hires_rgb"> HIRES - RGB</label>
+              <label><input type="radio" name="graphics_mode" value="vector"> VECTOR</label>
+            </div>
+          </div>
+
+          <!-- Volume Section -->
+          <div class="settings-section">
+            <button class="settings-header" type="button" data-section="volume">
+              Volume <span class="accordion-arrow">+</span>
+            </button>
+            <div class="settings-content" id="volume-content">
+              <div class="volume-display">
+                <span>Volume</span>
+                <span class="volume-value" id="volume-value">128</span>
+              </div>
+              <input type="range" id="volume-slider" name="volume" min="0" max="128" value="128">
+            </div>
+          </div>
+
+          <!-- Mods Section -->
+          <div class="settings-section">
+            <button class="settings-header" type="button" data-section="mods">
+              Mods <span class="accordion-arrow">+</span>
+            </button>
+            <div class="settings-content" id="mods-content">
+              <label><input type="checkbox" name="mod" value="shield_fix"> Shield Fix</label>
+              <div class="mod-description">Fixes shield mechanics bug from original</div>
+              <label><input type="checkbox" name="mod" value="vision_scroll"> Vision Scroll</label>
+              <div class="mod-description">Vision scrolls with map movement</div>
+              <label><input type="checkbox" name="mod" value="mark_doors"> Mark Doors on Maps</label>
+              <div class="mod-description">Shows doors on scroll maps</div>
+              <label><input type="checkbox" name="mod" value="creatures_ignore_objects"> Creatures Ignore Objects</label>
+              <div class="mod-description">Creatures don't interact with objects</div>
+              <label><input type="checkbox" name="mod" value="creatures_insta_regen"> Creatures Insta-Regen</label>
+              <div class="mod-description">Creatures regenerate instantly</div>
+              <label><input type="checkbox" name="mod" value="random_mazes"> Random Mazes</label>
+              <div class="mod-description">Enables random maze generation</div>
+              <label><input type="checkbox" name="mod" value="modern_controls"> Modern Controls</label>
+              <div class="mod-description">Arrow keys + TAB for controls</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="nav-links">
+          <a href="about.html" class="nav-link">About</a>
+          <span class="nav-separator">|</span>
+          <a href="how.html" class="nav-link">How to Play</a>
+          <span class="nav-separator">|</span>
+          <a href="https://github.com/cognitivegears/DungeonsOfDaggorath.github.io" class="nav-link">View on GitHub</a>
+        </nav>
       </section>
     </div>
     <div id="game_area">
@@ -84,6 +362,146 @@
           if (startButton) startButton.disabled = true;
         }
       })();
+
+      // Game Configuration Module
+      var GameConfig = {
+        validGraphicsModes: ['vector', 'normal_rgb', 'normal_ntsc', 'normal_ntsc_inv', 'hires_rgb', 'hires_ntsc', 'hires_ntsc_inv'],
+        validMods: ['shield_fix', 'vision_scroll', 'mark_doors', 'creatures_ignore_objects', 'creatures_insta_regen', 'random_mazes', 'modern_controls'],
+        validCheats: ['torch_always_lit', 'ring_always_works', 'creature_scaling', 'mithril_items', 'easy_reveal', 'invulnerable'],
+
+        parseParams: function() {
+          var params = new URLSearchParams(window.location.search);
+          var settings = {
+            graphics_mode: null,
+            volume: null,
+            mods: [],
+            cheats: []
+          };
+
+          var gm = params.get('graphics_mode');
+          if (gm && this.validGraphicsModes.indexOf(gm) !== -1) {
+            settings.graphics_mode = gm;
+          }
+
+          var vol = params.get('volume');
+          if (vol !== null) {
+            var v = parseInt(vol, 10);
+            if (!isNaN(v) && v >= 0 && v <= 128) {
+              settings.volume = v;
+            }
+          }
+
+          var mods = params.getAll('mod');
+          for (var i = 0; i < mods.length; i++) {
+            if (this.validMods.indexOf(mods[i]) !== -1 && settings.mods.indexOf(mods[i]) === -1) {
+              settings.mods.push(mods[i]);
+            }
+          }
+
+          var cheats = params.getAll('cheat');
+          for (var i = 0; i < cheats.length; i++) {
+            if (this.validCheats.indexOf(cheats[i]) !== -1 && settings.cheats.indexOf(cheats[i]) === -1) {
+              settings.cheats.push(cheats[i]);
+            }
+          }
+
+          return settings;
+        },
+
+        buildConfigString: function(settings) {
+          var parts = [];
+          if (settings.graphics_mode) {
+            parts.push('graphics_mode=' + settings.graphics_mode);
+          }
+          if (settings.volume !== null) {
+            parts.push('volume=' + settings.volume);
+          }
+          for (var i = 0; i < settings.mods.length; i++) {
+            parts.push('mod=' + settings.mods[i]);
+          }
+          for (var i = 0; i < settings.cheats.length; i++) {
+            parts.push('cheat=' + settings.cheats[i]);
+          }
+          return parts.join('|');
+        },
+
+        readFormValues: function() {
+          var settings = {
+            graphics_mode: null,
+            volume: null,
+            mods: [],
+            cheats: []
+          };
+
+          var graphicsRadio = document.querySelector('input[name="graphics_mode"]:checked');
+          if (graphicsRadio) {
+            settings.graphics_mode = graphicsRadio.value;
+          }
+
+          var volumeSlider = document.getElementById('volume-slider');
+          if (volumeSlider) {
+            settings.volume = parseInt(volumeSlider.value, 10);
+          }
+
+          var modCheckboxes = document.querySelectorAll('input[name="mod"]:checked');
+          modCheckboxes.forEach(function(cb) {
+            settings.mods.push(cb.value);
+          });
+
+          return settings;
+        },
+
+        updateUrl: function(settings) {
+          var params = new URLSearchParams();
+          if (settings.graphics_mode) {
+            params.set('graphics_mode', settings.graphics_mode);
+          }
+          if (settings.volume !== null && settings.volume !== 128) {
+            params.set('volume', settings.volume);
+          }
+          for (var i = 0; i < settings.mods.length; i++) {
+            params.append('mod', settings.mods[i]);
+          }
+          var currentCheats = this.parseParams().cheats;
+          for (var i = 0; i < currentCheats.length; i++) {
+            params.append('cheat', currentCheats[i]);
+          }
+
+          var newUrl = window.location.pathname;
+          var paramString = params.toString();
+          if (paramString) {
+            newUrl += '?' + paramString;
+          }
+          window.location.href = newUrl;
+        },
+
+        initializeForm: function() {
+          var settings = this.parseParams();
+
+          var graphicsValue = settings.graphics_mode || 'normal_ntsc';
+          var graphicsRadio = document.querySelector('input[name="graphics_mode"][value="' + graphicsValue + '"]');
+          if (graphicsRadio) {
+            graphicsRadio.checked = true;
+          }
+
+          var volumeSlider = document.getElementById('volume-slider');
+          var volumeDisplay = document.getElementById('volume-value');
+          var volumeValue = settings.volume !== null ? settings.volume : 128;
+          if (volumeSlider) {
+            volumeSlider.value = volumeValue;
+          }
+          if (volumeDisplay) {
+            volumeDisplay.textContent = volumeValue;
+          }
+
+          for (var i = 0; i < settings.mods.length; i++) {
+            var modCheckbox = document.querySelector('input[name="mod"][value="' + settings.mods[i] + '"]');
+            if (modCheckbox) {
+              modCheckbox.checked = true;
+            }
+          }
+        }
+      };
 
       var inputCommands = {
         "MOVE": ["FORWARD", "BACK", "LEFT", "RIGHT"],
@@ -272,6 +690,57 @@
         $("#inventory_area").hide();
         $("#menu_nav_area").hide();
         $("#incant_input_area").hide();
+
+        // Initialize settings form from URL params
+        GameConfig.initializeForm();
+
+        // Accordion toggle handlers
+        document.querySelectorAll('.settings-header').forEach(function(header) {
+          header.addEventListener('click', function() {
+            var section = this.getAttribute('data-section');
+            var content = document.getElementById(section + '-content');
+            var arrow = this.querySelector('.accordion-arrow');
+
+            if (content.classList.contains('open')) {
+              content.classList.remove('open');
+              arrow.textContent = '+';
+            } else {
+              document.querySelectorAll('.settings-content').forEach(function(c) {
+                c.classList.remove('open');
+              });
+              document.querySelectorAll('.accordion-arrow').forEach(function(a) {
+                a.textContent = '+';
+              });
+              content.classList.add('open');
+              arrow.textContent = '-';
+            }
+          });
+        });
+
+        // Volume slider real-time display update
+        var volumeSlider = document.getElementById('volume-slider');
+        var volumeDisplay = document.getElementById('volume-value');
+        if (volumeSlider && volumeDisplay) {
+          volumeSlider.addEventListener('input', function() {
+            volumeDisplay.textContent = this.value;
+          });
+        }
+
+        // Form change handlers - update URL on change
+        document.querySelectorAll('#settings_panel input[type="radio"], #settings_panel input[type="checkbox"]').forEach(function(input) {
+          input.addEventListener('change', function() {
+            var settings = GameConfig.readFormValues();
+            GameConfig.updateUrl(settings);
+          });
+        });
+
+        if (volumeSlider) {
+          volumeSlider.addEventListener('change', function() {
+            var settings = GameConfig.readFormValues();
+            GameConfig.updateUrl(settings);
+          });
+        }
+
         $("#readyPlayerOne").click(function () {
           console.log('[readyPlayerOne] clicked');
           $("#stopdemo").show();
@@ -282,15 +751,30 @@
           $("#menu_nav_area").hide();
           $("#incant_input_area").hide();
           $("#info").hide();
-          // Start the control handler to hide the stop demo button
-          // when the demo is not active
-          controlHandler = setInterval(updateControls, 500);
 
           if (Module.callMain) {
             Module.callMain([]);
           } else if (Module._main) {
             Module._main();
           }
+
+          // Apply URL configuration AFTER game initialization
+          // (loadOptFile has already run, so we can override settings)
+          try {
+            var applyConfigFunc = Module.cwrap('applyconfig', 'void', ['string']);
+            var settings = GameConfig.parseParams();
+            var configStr = GameConfig.buildConfigString(settings);
+            if (configStr) {
+              console.log('[Game] Applying config:', configStr);
+              applyConfigFunc(configStr);
+            }
+          } catch (e) {
+            console.warn('[Game] Could not apply config:', e);
+          }
+
+          // Start the control handler to hide the stop demo button
+          // when the demo is not active
+          controlHandler = setInterval(updateControls, 500);
         });
 
         // INCANT input handlers
